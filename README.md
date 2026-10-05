@@ -166,3 +166,10 @@ Dockerfile, docker-compose.yml
 - Kamere su javni strimovi MUP-a/AMSS-a i HAK-a, a zvanična čekanja su javno objavljeni podaci MUP RH i mađarske policije. Projekat ih samo čita, u razmaku od nekoliko minuta. Ne povećavaj učestalost i poštuj uslove korišćenja izvora.
 - Procena je **procena**: kamera ne vidi celu kolonu, a brojač ponekad ne vidi sve prolaske. Za važne odluke proveri i zvanične izvore.
 - Detekcija radi potpuno lokalno, bez slanja slika ikome. Model se jednom preuzme sa Hugging Face-a ([onnx-community/yolov10](https://huggingface.co/onnx-community)).
+
+## Licenca
+
+[PolyForm Noncommercial 1.0.0](LICENSE.md). Kod je slobodan za **nekomercijalnu** upotrebu: lično, za učenje i istraživanje, za neprofitne organizacije i javne ustanove. Smeš da ga pokrećeš, menjaš i deliš, uz uslov da uz kopiju ide tekst licence i red `Required Notice`. **Komercijalna upotreba nije dozvoljena** bez posebne dozvole autora: prodaja, plaćena usluga ili korišćenje u firmi radi zarade. Za takvu dozvolu otvori issue na GitHub-u.
+
+*English:* free for any noncommercial use under [PolyForm Noncommercial 1.0.0](LICENSE.md); commercial use requires separate permission.
+

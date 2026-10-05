@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Stanje na graničnim prelazima Srbije – kamere, procena čekanja, planer puta (granice.sparkcan.com)",
   "private": true,
+  "license": "PolyForm-Noncommercial-1.0.0",
   "main": "server/server.js",
   "scripts": {
     "start": "node server/server.js",
