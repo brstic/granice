@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="sr-Latn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Stanje na granicama – čekanje na graničnim prelazima Srbije</title>
+<meta name="description" content="Koliko se čeka na graničnim prelazima Srbije: Horgoš, Kelebija, Batrovci, Šid, Gradina, Preševo, Vatin, Gostun, Sremska Rača, Mali Zvornik i drugi – uživo sa 41 kamere, procena čekanja, kada je gužva.">
+<meta name="robots" content="index, follow"><link rel="canonical" href="https://granice.sparkcan.com/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap">
+<link rel="icon" type="image/svg+xml" href="/logo.svg"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<style>
+  /* Samostalna strana: ne koristi style.css ni skripte sajta. Iste boje kao sajt. */
+  :root { --plava: #253965; --tamna: #10254f; --svetla: #d2e7ff; --svetla2: #f3f9ff; --linija: #d7d8d6; --tekst: #111; --tekst2: #444; --tekst3: #777; --zelena: #017932; --zelena2: #e3f3e7; --zuta: #b26a00; --zuta2: #fff1d6; --crvena: #c6363c; --crvena2: #fbe3e5; --siva2: #eceef2; color-scheme: light only; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: #f4f5f7; color: var(--tekst); font: 500 14px/1.55 "Montserrat", Arial, Helvetica, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: var(--plava); }
+  button { font: inherit; }
+  .traka { background: var(--plava); color: #fff; }
+  .traka-u { max-width: 1160px; margin: 0 auto; padding: 0 20px; height: 40px; display: flex; align-items: center; justify-content: space-between; font-size: 12.5px; }
+  .traka a { color: #fff; text-decoration: none; font-weight: 600; }
+  .glava { background: #fff; border-bottom: 1px solid var(--linija); }
+  .glava-u { max-width: 1160px; margin: 0 auto; padding: 18px 20px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .glava img { width: 40px; height: 40px; display: block; }
+  .glava h1 { margin: 0; font-size: 22px; color: var(--plava); letter-spacing: -.01em; }
+  .glava p { margin: 2px 0 0; font-size: 12.5px; color: var(--tekst3); }
+  .glava .az { margin-left: auto; font-size: 12px; color: var(--tekst3); text-align: right; }
+  .glava .az b { color: var(--plava); }
+  .uzivo { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #1fa34a; margin-right: 6px; box-shadow: 0 0 0 3px rgba(31,163,74,.18); vertical-align: 1px; }
+  main { max-width: 1160px; margin: 0 auto; padding: 22px 20px 56px; display: flex; flex-direction: column; gap: 28px; }
+  h2 { margin: 0 0 4px; font-size: 17px; color: var(--plava); }
+  .pod { font-size: 12.5px; color: var(--tekst3); margin: 0 0 12px; }
+
+  /* ---- spisak prelaza: jedan red po prelazu, dodir otvara kamere ---- */
+  .sp-alat { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; min-width: 0; }
+  .filteri { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; min-width: 0; flex: 1; padding: 2px 0; }
+  .filteri::-webkit-scrollbar { display: none; }
+  .fcip { flex: none; border: 1px solid #c9cdd6; background: #fff; color: var(--tekst2); padding: 7px 13px; font: 600 12.5px "Montserrat", Arial, sans-serif; cursor: pointer; border-radius: 999px; white-space: nowrap; }
+  .fcip.aktivan { background: var(--plava); border-color: var(--plava); color: #fff; }
+  .sp-red { flex: none; font: 600 12.5px "Montserrat", Arial, sans-serif; padding: 7px 8px; border: 1px solid #c9cdd6; background: #fff; color: var(--tekst2); border-radius: 0; max-width: 46%; }
+  .legenda { display: flex; gap: 6px 14px; flex-wrap: wrap; font-size: 11.5px; color: var(--tekst3); margin: 0 0 10px; }
+  .legenda span::before { content: ""; display: inline-block; width: 10px; height: 10px; margin-right: 5px; vertical-align: -1px; }
+  .legenda .z::before { background: var(--zelena); } .legenda .u::before { background: var(--zuta); } .legenda .c::before { background: var(--crvena); } .legenda .x::before { display: none; }
+  .sp { background: #fff; border: 1px solid var(--linija); }
+  .sp-zag, .pr-glava { display: grid; grid-template-columns: minmax(0, 1fr) 130px 130px 26px; gap: 10px; align-items: center; padding-left: 14px; padding-right: 10px; }
+  .sp-zag { font-size: 10.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--tekst3); font-weight: 700; background: #fafbfd; padding-top: 9px; padding-bottom: 9px; border-bottom: 1px solid var(--linija); border-left: 4px solid transparent; position: sticky; top: 0; z-index: 3; }
+  .sp-zag span:nth-child(2), .sp-zag span:nth-child(3) { text-align: center; }
+  .pr { border-bottom: 1px solid #e6e8ec; border-left: 4px solid var(--siva2); }
+  .pr:last-child { border-bottom: 0; }
+  .pr.mirno { border-left-color: var(--zelena); } .pr.umereno { border-left-color: #4a90e2; } .pr.guzva { border-left-color: var(--zuta); } .pr.velika { border-left-color: var(--crvena); }
+  .pr-glava { width: 100%; min-height: 62px; padding-top: 9px; padding-bottom: 9px; background: none; border: 0; text-align: left; cursor: pointer; font: inherit; color: inherit; -webkit-tap-highlight-color: transparent; }
+  .pr-glava:hover { background: var(--svetla2); }
+  .pr.otvoren .pr-glava { background: var(--svetla2); }
+  .pr-ime { min-width: 0; display: flex; flex-direction: column; }
+  .pr-ime b { font-size: 15.5px; color: var(--plava); line-height: 1.25; }
+  .pr-ime small { font-size: 11.5px; color: var(--tekst3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.4; }
+  .pr-ime .r { color: var(--crvena); font-weight: 700; } .pr-ime .p { color: var(--zelena); font-weight: 700; }
+  .vr { display: flex; flex-direction: column; align-items: center; gap: 2px; min-width: 0; }
+  .vr b { display: block; width: 100%; max-width: 110px; text-align: center; padding: 5px 4px; font-size: 14px; font-weight: 800; color: #fff; background: #c8c8c8; white-space: nowrap; line-height: 1.25; }
+  .vr b.z { background: var(--zelena); } .vr b.u { background: var(--zuta); } .vr b.c { background: var(--crvena); } .vr b.n { background: var(--siva2); color: var(--tekst3); font-weight: 600; }
+  .vr small { font-size: 10.5px; color: var(--tekst3); white-space: nowrap; min-height: 13px; line-height: 13px; }
+  .pr-str { color: var(--tekst3); font-size: 20px; line-height: 1; text-align: center; transition: transform .15s; }
+  .pr.otvoren .pr-str { transform: rotate(90deg); color: var(--plava); }
+  .pr-telo { display: none; padding: 12px 14px 16px; border-top: 1px solid #e6e8ec; background: #f7f9fc; }
+  .pr.otvoren .pr-telo { display: block; }
+  .pr-info { font-size: 12.5px; color: var(--tekst2); margin: 0 0 12px; display: flex; flex-wrap: wrap; gap: 4px 16px; align-items: baseline; }
+  .pr-info a { font-weight: 700; text-decoration: none; }
+  .pr-info .nap { flex-basis: 100%; background: var(--zuta2); border-left: 3px solid var(--zuta); padding: 6px 10px; color: var(--tekst); }
+  .kam-mreza { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
+  .kam { border: 1px solid var(--linija); display: flex; flex-direction: column; background: #fff; }
+  .kam-slika { position: relative; aspect-ratio: 16 / 9; background: #0f1c33; overflow: hidden; cursor: zoom-in; }
+  .kam-slika img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .kam-slika .nema { position: absolute; inset: 0; display: grid; place-items: center; color: #9fb0d0; font-size: 12.5px; text-align: center; padding: 20px; }
+  .kam-nivo { position: absolute; left: 10px; top: 10px; padding: 4px 9px; font-size: 11px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; color: #fff; background: #777; }
+  .kam-nivo.mirno { background: var(--zelena); } .kam-nivo.umereno { background: #4a90e2; } .kam-nivo.guzva { background: var(--zuta); } .kam-nivo.velika { background: var(--crvena); }
+  .kam-telo { padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+  .kam-naslov { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+  .kam-naslov b { color: var(--plava); font-size: 14px; }
+  .kam-naslov small { color: var(--tekst3); font-size: 11.5px; white-space: nowrap; }
+  .kam-hero { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 10px; }
+  .kam-hero-l { padding: 9px 12px; background: var(--svetla2); border-left: 4px solid var(--plava); display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .kam-hero-d { padding: 9px 12px; border: 1px solid var(--linija); display: flex; flex-direction: column; gap: 2px; align-items: flex-end; min-width: 0; text-align: right; }
+  .kam-lab { font-size: 10px; text-transform: uppercase; letter-spacing: .06em; color: var(--tekst3); font-weight: 700; line-height: 1.3; }
+  .kam-min { font-size: 22px; font-weight: 800; color: var(--plava); line-height: 1.15; }
+  .kam-broj { font-size: 22px; font-weight: 800; color: var(--tekst); line-height: 1.15; }
+  .kam-broj i { font-style: normal; font-size: 14px; color: var(--crvena); vertical-align: top; }
+  .kam-min.tiho, .kam-broj.tiho { color: var(--tekst3); font-weight: 600; }
+  .kam-hero-l small, .kam-danas { font-size: 11.5px; color: var(--tekst3); }
+  .kam-kret.stoji { color: #b3261e; font-weight: 600; }
+  .kam-kret.ide { color: #1b7f3b; font-weight: 600; }
+  .kam-cipovi { display: flex; flex-wrap: wrap; gap: 4px; justify-content: flex-end; }
+  .kam-cip { font-size: 10.5px; font-weight: 600; padding: 2px 6px; background: #eef1f6; color: var(--tekst2); white-space: nowrap; }
+  .kam-cip.prazno { background: transparent; color: var(--tekst3); padding: 2px 0; }
+  .kam-tekst { font-size: 12px; color: var(--tekst2); }
+  .kam-tekst b { color: var(--tekst); }
+  .kam-tekst .r { color: var(--crvena); font-weight: 700; } .kam-tekst .p { color: var(--zelena); font-weight: 700; }
+  .kam-graf { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .kam-graf figure { margin: 0; min-width: 0; }
+  .kam-graf figcaption { font-size: 10px; color: var(--tekst3); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 700; }
+  .kam-graf figcaption i { font-style: normal; text-transform: none; letter-spacing: 0; font-weight: 500; }
+  .kam-graf svg { width: 100%; height: 48px; display: block; background: #fafbfd; border: 1px solid #eceded; }
+  .kam-gradi { font-size: 11.5px; color: var(--tekst3); padding: 8px 10px; background: #fafbfd; border: 1px dashed var(--linija); line-height: 1.45; }
+  .kam-izvor { font-size: 10.5px; color: var(--tekst3); border-top: 1px solid #eceded; padding-top: 8px; margin-top: auto; }
+  .toplotna { border: 1px solid var(--linija); padding: 12px 14px; margin-top: 14px; }
+  .toplotna h3 { margin: 0 0 8px; font-size: 13.5px; color: var(--plava); }
+  .toplotna table { border-collapse: collapse; width: 100%; table-layout: fixed; }
+  .toplotna td, .toplotna th { padding: 0; border: 1px solid #fff; height: 16px; font-size: 9.5px; text-align: center; color: var(--tekst3); }
+  .toplotna th { font-weight: 600; width: 26px; }
+
+  .cek { display: inline-block; padding: 2px 7px; font-weight: 800; font-size: 12.5px; color: #fff; background: #c8c8c8; white-space: nowrap; }
+  .cek.z { background: var(--zelena); } .cek.u { background: var(--zuta); } .cek.c { background: var(--crvena); } .cek.n { background: var(--siva2); color: var(--tekst3); }
+  .modal { position: fixed; inset: 0; background: rgba(16,37,79,.8); display: none; place-items: center; z-index: 50; padding: 20px; cursor: zoom-out; }
+  .modal.otvoren { display: grid; }
+  .modal img { max-width: min(1280px, 100%); max-height: 90vh; border: 3px solid #fff; }
+  .modal p { position: absolute; bottom: 14px; left: 0; right: 0; text-align: center; color: #fff; font-size: 13px; }
+  /* ---- planer puta ---- */
+  .rt { background: #fff; border: 1px solid var(--linija); border-top: 4px solid var(--plava); padding: 18px 18px 16px; }
+  .rt-forma { display: grid; grid-template-columns: 1fr auto 1fr 150px auto; gap: 10px; align-items: end; }
+  .rt-polje { display: flex; flex-direction: column; gap: 4px; position: relative; min-width: 0; }
+  .rt-polje > span { font-size: 10.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--tekst3); font-weight: 700; }
+  .rt-polje input, .rt-polje select { font: inherit; font-size: 15px; padding: 10px 12px; border: 1px solid #b9bcc2; background: #fff; color: var(--tekst); width: 100%; border-radius: 0; }
+  .rt-polje input:focus, .rt-polje select:focus { outline: 2px solid var(--plava); outline-offset: -1px; border-color: var(--plava); }
+  .rt-zameni { height: 44px; width: 40px; border: 1px solid #b9bcc2; background: #f7f8fa; color: var(--plava); font-size: 18px; cursor: pointer; }
+  .rt-dugme { height: 44px; padding: 0 18px; border: 0; background: var(--plava); color: #fff; font-weight: 700; cursor: pointer; white-space: nowrap; }
+  .rt-dugme:hover { background: var(--tamna); } .rt-dugme:disabled { opacity: .6; cursor: wait; }
+  .rt-eu { grid-column: 1 / -1; font-size: 12.5px; color: var(--tekst2); display: flex; gap: 8px; align-items: center; cursor: pointer; }
+  .rt-lista { position: absolute; top: 100%; left: 0; right: 0; background: #fff; border: 1px solid var(--plava); border-top: 0; z-index: 20; display: none; max-height: 320px; overflow-y: auto; }
+  .rt-lista.otvorena { display: block; }
+  .rt-lista button { display: flex; justify-content: space-between; gap: 10px; width: 100%; text-align: left; padding: 9px 12px; border: 0; background: #fff; cursor: pointer; font-size: 14px; }
+  .rt-lista button small { color: var(--tekst3); font-size: 12px; white-space: nowrap; }
+  .rt-lista button.akt, .rt-lista button:hover { background: var(--svetla2); }
+  .rt-rez { margin-top: 16px; display: flex; flex-direction: column; gap: 12px; }
+  .rt-rez:empty { display: none; }
+  .rt-pre { border-left: 5px solid var(--zelena); background: var(--zelena2); padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; }
+  .rt-pre .lab { font-size: 10.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--zelena); font-weight: 700; }
+  .rt-pre .ime { font-size: 22px; font-weight: 700; color: var(--tamna); line-height: 1.2; }
+  .rt-pre .ime small { font-size: 13px; color: var(--tekst2); font-weight: 600; }
+  .rt-pre .brojke { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13.5px; color: var(--tekst2); }
+  .rt-pre .brojke b { color: var(--tekst); }
+  .rt-pre .uporedi { font-size: 13.5px; color: var(--tekst); margin: 2px 0 0; }
+  .rt-pre a { font-weight: 700; font-size: 13px; }
+  .rt-opc { background: #fff; border: 1px solid var(--linija); }
+  .rt-opc h3 { margin: 0; padding: 9px 14px; font-size: 10.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--tekst3); background: #fafbfd; border-bottom: 1px solid var(--linija); }
+  .rt-o { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 12px; padding: 10px 14px; border-bottom: 1px solid #eceded; border-left: 4px solid transparent; }
+  .rt-o:last-child { border-bottom: 0; }
+  .rt-o.najbolja { border-left-color: var(--zelena); background: #f3faf5; }
+  .rt-o-ime b { color: var(--plava); font-size: 14.5px; }
+  .rt-o-ime small, .rt-o-uk small { display: block; font-size: 11.5px; color: var(--tekst3); }
+  .rt-o-uk { text-align: right; } .rt-o-uk b { font-size: 15px; white-space: nowrap; }
+  .rt-o-det { grid-column: 1 / -1; font-size: 12.5px; color: var(--tekst2); display: flex; flex-wrap: wrap; gap: 2px 12px; align-items: center; margin-top: 4px; }
+  .rt-kamere { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 420px)); gap: 10px; }
+  .rt-kam { margin: 0; background: #fff; border: 1px solid var(--linija); cursor: zoom-in; }
+  .rt-kam .kam-slika { cursor: zoom-in; }
+  .rt-kam figcaption { display: flex; justify-content: space-between; gap: 8px; padding: 7px 10px; font-size: 12px; color: var(--tekst2); }
+  .rt-kam figcaption b { color: var(--plava); }
+  .rt-kam-nas { font-size: 12.5px; font-weight: 700; color: var(--tamna); margin: 2px 0 -4px; }
+  .rt-nap { font-size: 12px; color: var(--tekst3); margin: 0; }
+  .rt-greska { background: var(--zuta2); border-left: 5px solid var(--zuta); padding: 12px 14px; font-size: 13.5px; }
+  footer { max-width: 1160px; margin: 0 auto; padding: 18px 20px 30px; font-size: 12px; color: var(--tekst3); border-top: 1px solid var(--linija); line-height: 1.6; }
+  footer a { text-decoration: none; font-weight: 600; margin-right: 14px; }
+  .prazno { background: #fff; border: 1px solid var(--linija); padding: 22px; text-align: center; color: var(--tekst2); }
+  @media (max-width: 760px) {
+    .glava img, .glava p { display: none; }
+    .glava-u { padding: 12px 14px; gap: 4px; }
+    .glava h1 { font-size: 19px; }
+    .glava .az { margin-left: 0; text-align: left; font-size: 12px; flex-basis: 100%; }
+    .glava .az .dop { display: none; }
+    .traka-u { padding: 0 14px; }
+    main { padding: 16px 10px 40px; gap: 24px; }
+    h2 { font-size: 17px; padding: 0 4px; } .pod { padding: 0 4px; }
+    .rt { padding: 14px 12px 12px; }
+    /* polja celom širinom; dugme ⇅ stoji preko desne ivice između „Odakle“ i „Kuda“ */
+    .rt-forma { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; position: relative; }
+    .rt-forma .rt-polje:nth-of-type(1), .rt-forma .rt-polje:nth-of-type(2) { grid-column: 1 / -1; }
+    .rt-forma .rt-polje:nth-of-type(1) input, .rt-forma .rt-polje:nth-of-type(2) input { padding-right: 46px; }
+    .rt-kad { grid-column: 1 / 2; } .rt-dugme { grid-column: 2 / 3; padding: 0 10px; }
+    .rt-zameni { position: absolute; right: 8px; top: 49px; width: 36px; height: 36px; z-index: 2; border-radius: 50%; background: #fff; box-shadow: 0 1px 4px rgba(16,37,79,.15); }
+    .rt-polje input, .rt-polje select { font-size: 16px; }
+    .rt-zameni { transform: rotate(90deg); font-size: 16px; }   /* 16 px – iOS ne zumira polje */
+    .rt-pre .ime { font-size: 20px; }
+    .sp-zag, .pr-glava { grid-template-columns: minmax(0, 1fr) 82px 82px 12px; gap: 5px; padding-left: 10px; padding-right: 6px; }
+    .vr b { font-size: 12.5px; padding: 5px 2px; }
+    .pr-ime b { font-size: 15px; }
+    .pr-telo { padding: 10px 0 14px; }
+    .pr-info { padding: 0 12px; }
+    .kam-mreza { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 10px; padding: 0 12px 4px; scrollbar-width: thin; }
+    .kam-mreza .kam { flex: 0 0 86%; scroll-snap-align: center; }
+    .legenda, .sp-alat { padding: 0 4px; }
+  }
+  }
+</style>
+</head>
+<body>
+<div class="traka"><div class="traka-u"><a href="/">Granice Srbije</a><span><a href="/statistika">Statistika gužvi →</a></span></div></div>
+<header class="glava"><div class="glava-u"><img src="/logo-512.png" alt=""><div><h1>Stanje na graničnim prelazima Srbije</h1><p>Uživo sa javnih kamera: koliko vozila čeka, koliko prolazi i koliko se otprilike čeka.</p></div><div class="az" id="azurirano">Učitavam…</div></div></header>
+
+<main>
+  <section>
+    <h2>Kuda putujete?</h2>
+    <p class="pod">Preporučićemo prelaz preko koga najbrže stižete – vožnja + čekanje u trenutku kad stignete.</p>
+    <div class="rt">
+      <form class="rt-forma" id="rt-forma" autocomplete="off">
+        <label class="rt-polje"><span>Odakle</span><input id="rt-od" placeholder="npr. Novi Sad" aria-autocomplete="list" enterkeyhint="next"><div class="rt-lista" id="rt-od-lista"></div></label>
+        <button type="button" class="rt-zameni" id="rt-zameni" title="Zameni polazak i odredište" aria-label="Zameni polazak i odredište">⇄</button>
+        <label class="rt-polje"><span>Kuda</span><input id="rt-do" placeholder="npr. Minhen, Budimpešta, Solun" aria-autocomplete="list" enterkeyhint="search"><div class="rt-lista" id="rt-do-lista"></div></label>
+        <label class="rt-polje rt-kad"><span>Polazak</span><select id="rt-kad"><option value="0">Sada</option><option value="1">za 1 sat</option><option value="2">za 2 sata</option><option value="3">za 3 sata</option><option value="4">za 4 sata</option><option value="6">za 6 sati</option><option value="8">za 8 sati</option><option value="12">za 12 sati</option><option value="24">sutra u ovo vreme</option></select></label>
+        <button class="rt-dugme" type="submit" id="rt-dugme">Nađi prelaz</button>
+        <label class="rt-eu"><input type="checkbox" id="rt-eu"> Imam pasoš EU (može i Đala – samo za državljane EU)</label>
+      </form>
+      <div class="rt-rez" id="rt-rez"></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Sada na granicama</h2>
+    <p class="pod">Procena čekanja za putnička vozila sa kamera, osvežava se na 5 minuta. Dodirnite prelaz za kamere; <a href="/statistika">statistika gužvi</a> pokazuje kada se najmanje čeka.</p>
+    <div class="sp-alat"><div class="filteri" id="filteri"></div><select class="sp-red" id="sp-red" aria-label="Redosled"><option value="red">Najprometniji</option><option value="izlaz">Najkraće – izlaz</option><option value="ulaz">Najkraće – ulaz</option><option value="guzva">Najveća gužva</option></select></div>
+    <p class="legenda"><span class="z">do 10 min</span><span class="u">10–30 min</span><span class="c">preko 30 min</span><span class="x">≈ procena sa kamera</span></p>
+    <div class="sp" id="spisak"><div class="prazno">Učitavam…</div></div>
+  </section>
+</main>
+
+<div class="modal" id="kam-modal"><img id="kam-modal-slika" alt=""><p id="kam-modal-tekst"></p></div>
+<footer><a href="/">Stanje na granicama</a><a href="/statistika">Statistika gužvi</a><a href="/privatnost">Privatnost</a><br>Podaci su informativni i mogu da kasne. Broj vozila i čekanje su automatska procena iz javnih kamera (MUP Srbije / AMSS, HAK), bez prepoznavanja tablica ili lica. Pre puta proverite i zvanične izvore.</footer>
+
+<script>
+  (function () {
+    const $ = (s) => document.querySelector(s);
+    const esc = (t) => String(t == null ? '' : t).replace(/[&<>"]/g, (x) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[x]));
+    const NIVO = { mirno: 'Mirno', umereno: 'Umereno', guzva: 'Gužva', velika: 'Velika gužva' };
+    const DANI = ['Pon', 'Uto', 'Sre', 'Čet', 'Pet', 'Sub', 'Ned'];
+    const RED_PRELAZA = ['Horgoš', 'Batrovci', 'Preševo', 'Gradina', 'Kelebija', 'Šid', 'Sremska Rača', 'Vatin', 'Gostun', 'Mali Zvornik', 'Kotroman', 'Špiljani', 'Jabuka', 'Trbušnica', 'Vrška Čuka', 'Đala', 'Bačka Palanka', 'Bezdan'];
+    const rang = (p) => (RED_PRELAZA.indexOf(p) < 0 ? 99 : RED_PRELAZA.indexOf(p));
+    const vreme = (iso) => new Date(iso).toLocaleTimeString('sr-Latn-RS', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Belgrade' });
+    const preMin = (iso) => Math.round((Date.now() - new Date(iso)) / 60000);
+    /* jedna skala svuda (Branko, 22.09.): mirno do 10 min, umereno do 20, gužva do 30, velika gužva preko 30 */
+    const klasa = (m) => (m == null ? 'n' : m <= 10 ? 'z' : m <= 30 ? 'u' : 'c');
+    /* kad kamera trenutno ne daje merenje, prikazuje se poslednja poznata ili tipična procena – uz oznaku odakle je */
+    const pre = (iso) => { const m = preMin(iso); return m < 60 ? 'pre ' + m + ' min' : m < 48 * 60 ? 'pre ' + Math.round(m / 60) + ' h' : 'pre ' + Math.round(m / 1440) + ' dana'; };
+    const starost = (izvor, od, kratko) => (izvor === 'tipicno' ? (kratko ? 'tipično' : 'tipično u ovo doba') : izvor === 'poslednja' && od ? (kratko ? '' : 'poslednje merenje ') + pre(od) : '');
+    const kamTekst = (n) => n + (n % 10 === 1 && n % 100 !== 11 ? ' kamera' : [2, 3, 4].includes(n % 10) && ![12, 13, 14].includes(n % 100) ? ' kamere' : ' kamera');
+    /* konkretna procena, bez „N+“: „≈ 45 min“, preko sat vremena „1 h 20 min“ (bez ≈, da stane u uzan red na telefonu) */
+    const minTekst = (m, plus, procena) => { if (m == null) return '—'; m = Math.round(m); if (m === 0) return 'bez čekanja'; if (m < 60) return (procena ? '≈ ' : '') + m + ' min'; const r = Math.round(m / 5) * 5, h = Math.floor(r / 60), o = r % 60; return h + ' h' + (o ? ' ' + o + ' min' : ''); };
+    let stanje = null, kamere = null, filter = '';
+
+    /* ---------- grafikoni ---------- */
+    function sparkline(tacke) {
+      const prvi = new Date(tacke[0][0]).getTime(), t0 = Math.max(Date.now() - 24 * 3600e3, prvi - 300e3), raspon = Date.now() - t0, max = Math.max(4, ...tacke.map((p) => p[1]));
+      const pts = tacke.map(([t, v]) => [((new Date(t) - t0) / raspon) * 200, 42 - (v / max) * 38]);
+      const d = pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' ');
+      return `<svg viewBox="0 0 200 44" preserveAspectRatio="none"><path d="${d} L${pts[pts.length - 1][0].toFixed(1)} 44 L${pts[0][0].toFixed(1)} 44 Z" fill="rgba(37,57,101,.12)"/><path d="${d}" fill="none" stroke="#253965" stroke-width="1.5"/><text x="2" y="9" font-size="8" fill="#999">${max}</text></svg>`;
+    }
+    function profil(p, satSad) {
+      const max = Math.max(1, ...p.filter((v) => v != null));
+      return `<svg viewBox="0 0 240 44" preserveAspectRatio="none">${p.map((v, i) => v == null ? '' : `<rect x="${i * 10 + 1}" y="${42 - (v / max) * 38}" width="8" height="${(v / max) * 38}" fill="${i === satSad ? '#c6363c' : '#4a90e2'}"><title>${i}:00 – prosečno ${v}</title></rect>`).join('')}${[0, 6, 12, 18].map((h) => `<text x="${h * 10 + 1}" y="43" font-size="7" fill="#999">${h}</text>`).join('')}</svg>`;
+    }
+    const boja = (v, max) => { if (v == null) return '#f2f2f2'; const r = max ? v / max : 0; return r < 0.25 ? '#dcefe1' : r < 0.5 ? '#b9e3c3' : r < 0.75 ? '#f6d28a' : '#e8a3a8'; };
+    function toplotna(k) {
+      const max = Math.max(1, ...k.toplotna.flat().filter((v) => v != null));
+      return `<div class="toplotna"><h3>${esc(k.naziv)} – kada je gužva (prosek vozila u koloni, dan × sat)</h3><table><tr><th></th>${Array.from({ length: 24 }, (_, h) => `<th>${h}</th>`).join('')}</tr>${k.toplotna.map((red, d) => `<tr><th>${DANI[d]}</th>${red.map((v, h) => `<td style="background:${boja(v, max)}" title="${DANI[d]} ${h}:00 – ${v == null ? 'nema podataka' : 'prosečno ' + v}"></td>`).join('')}</tr>`).join('')}</table></div>`;
+    }
+
+    /* ---------- kartica kamere ---------- */
+    function karta(k, satSad) {
+      const p = k.poslednje, pr = k.procena || {};
+      const slika = k.slika ? `<img src="${esc(k.slika)}" alt="${esc(k.naziv)}" loading="lazy">` : `<div class="nema">Kamera još nije snimljena</div>`;
+      const nivo = k.nivo ? `<span class="kam-nivo ${k.nivo}">${NIVO[k.nivo]}</span>` : '';
+      const cipovi = p && p.ok ? [['auto', p.auto], ['bus', p.autobus], ['kamion', p.kamion], ['motor', p.motor]].filter(([, n]) => n).map(([t, n]) => `<span class="kam-cip">${n} ${t}</span>`).join('') : '';
+      /* protok: ocena iz izbrojanih prelazaka linije šaltera (poslednja 3 h, novije važnije) + koliko je stvarno izbrojano u poslednjih sat */
+      const protokT = pr.protok != null && pr.metod !== 'formula' ? `prolazi ≈ ${Math.round(pr.protok * 60)} vozila/h` + (pr.posmatrano >= 60 ? ` · izbrojano ${pr.prolasci} za ${Math.round(pr.posmatrano / 60)} min gledanja u poslednjih sat` : pr.metod === 'prior' ? ' · još nema izbrojanih prolazaka, početna pretpostavka' : '') : '';
+      const kretT = pr.kretanje ? (pr.kretanje.stoji ? (pr.kretanje.min >= 10 ? `kolona stoji već ${pr.kretanje.min} min` : 'kolona trenutno stoji') : 'kolona se pomera') : '';
+      const procena = k.procena ? `<div class="kam-hero-l"><span class="kam-lab">Procena čekanja · ${esc(pr.za)}</span><b class="kam-min">${esc(pr.tekst)}</b>${kretT ? `<small class="kam-kret ${pr.kretanje.stoji ? 'stoji' : 'ide'}">${esc(kretT)}</small>` : ''}${protokT ? `<small>${esc(protokT)}</small>` : ''}${pr.doKraja ? `<small>kolona izlazi iz kadra – računato ≈ ${pr.vozila} vozila</small>` : ''}${pr.parkirano ? `<small>${pr.parkirano} vozila stoji bez pomeranja 15+ min – ne računa se kao kolona</small>` : ''}${pr.tipicnoMin != null ? `<small>obično u ovo doba ${esc(minTekst(pr.tipicnoMin, false, true))}</small>` : ''}${starost(pr.izvorProcene, pr.od) ? `<small>${esc(starost(pr.izvorProcene, pr.od))}</small>` : ''}</div>` : `<div class="kam-hero-l"><span class="kam-lab">Procena čekanja</span><b class="kam-min tiho">—</b></div>`;
+      const brojac = p && p.ok ? `<div class="kam-hero-d"><span class="kam-lab">Detektovano sada</span><b class="kam-broj">${p.ukupno}</b><span class="kam-cipovi">${cipovi || '<span class="kam-cip prazno">prazno</span>'}</span>${pr.prosloDanas ? `<small class="kam-danas" title="izbrojano ${pr.prosloDanas.izbrojano} prolazaka za ${pr.prosloDanas.gledanoMin} min gledanja, razvučeno na ceo period">prošlo od ${esc(pr.prosloDanas.od)} ≈ ${pr.prosloDanas.broj} vozila</small>` : ''}</div>` : `<div class="kam-hero-d"><span class="kam-lab">Kamera</span><b class="kam-broj tiho">—</b><span class="kam-cipovi"><span class="kam-cip prazno">${p && p.greska ? 'nedostupna' : 'čeka merenje'}</span></span></div>`;
+      let poredjenje = '';
+      if (k.tipicno && k.indeks != null) poredjenje = k.indeks >= 1.5 ? `<b>${k.indeks.toFixed(1)}× više vozila</b> nego obično u ovo doba` : k.indeks <= 0.6 ? `<b>manje vozila</b> nego obično u ovo doba` : `uobičajeno za ovo doba`;
+      const trend = k.trend === 'raste' ? '<span class="r">▲ raste</span> u poslednjih sat vremena' : k.trend === 'pada' ? '<span class="p">▼ opada</span> u poslednjih sat vremena' : '';
+      const info = [poredjenje, trend].filter(Boolean).join(' · ');
+      const dovoljno24 = k.danas && k.danas.length >= 6, dovoljnoProfil = k.profil && k.profil.filter((v) => v != null).length >= 4;
+      const rasponH = dovoljno24 ? (Date.now() - new Date(k.danas[0][0])) / 3600e3 : 0;
+      const nasl24 = rasponH >= 20 ? 'Poslednja 24 h' : rasponH >= 1.5 ? 'Poslednjih ' + Math.round(rasponH) + ' h' : 'Poslednjih ' + Math.max(10, Math.round(rasponH * 60)) + ' min';
+      const grafovi = (dovoljno24 || dovoljnoProfil) ? `<div class="kam-graf">${dovoljno24 ? `<figure><figcaption>${nasl24}</figcaption>${sparkline(k.danas)}</figure>` : ''}${dovoljnoProfil ? `<figure><figcaption>Prosek po satu <i>(crveno = sad)</i></figcaption>${profil(k.profil, satSad)}</figure>` : ''}</div>` : `<div class="kam-gradi">Statistika se gradi – ${k.dana ? k.dana + '. dan merenja' : 'prvo merenje'}. Grafikoni posle nekoliko sati, tipične gužve po danima posle 3 dana.</div>`;
+      const najbolje = k.najbolje && k.najbolje.length ? `<div class="kam-tekst">Najmanja gužva obično: <b>${k.najbolje.map((h) => h + 'h').join(', ')}</b> · najveća: <b>${k.najgore.map((h) => h + 'h').join(', ')}</b></div>` : '';
+      return `<article class="kam"><div class="kam-slika" data-slika="${esc(k.slika || '')}" data-naziv="${esc(k.naziv)}">${slika}${nivo}</div>
+        <div class="kam-telo"><div class="kam-naslov"><b>${esc(k.naziv)}</b><small>${p ? (p.ok ? pre(p.vreme) : 'poslednji pokušaj nije uspeo') : ''}</small></div>
+        <div class="kam-hero">${procena}${brojac}</div>${info ? `<div class="kam-tekst">${info}</div>` : ''}${grafovi}${najbolje}
+        <div class="kam-izvor">${esc(k.izvor)}</div></div></article>`;
+    }
+
+    /* ---------- pregled i detalji po prelazu ---------- */
+    function grupe() {
+      const sa = (kamere ? kamere.kamere : []).filter((k) => k.poslednje);
+      const g = {};
+      for (const k of sa) { (g[k.prelaz] = g[k.prelaz] || { prelaz: k.prelaz, drzava: k.drzava, kamere: [] }).kamere.push(k); }
+      const red = (k) => (k.smer === 'ulaz' ? 0 : 1) + (k.hr ? 2 : 0);   // MUP ulaz, MUP izlaz, HR ka Srbiji, HR iz Srbije
+      return Object.values(g).sort((a, b) => rang(a.prelaz) - rang(b.prelaz)).map((x) => {
+        x.kamere.sort((a, b) => red(a) - red(b) || a.id.localeCompare(b.id));
+        const po = (kamere.poPrelazu || []).filter((p) => p.prelaz === x.prelaz);
+        x.ulaz = po.find((p) => p.smer === 'ulaz') || null; x.izlaz = po.find((p) => p.smer === 'izlaz') || null;
+        const nivoi = ['mirno', 'umereno', 'guzva', 'velika']; x.nivo = x.kamere.map((k) => k.nivo).filter(Boolean).sort((a, b) => nivoi.indexOf(b) - nivoi.indexOf(a))[0] || null;
+        x.vozila = x.kamere.reduce((a, k) => a + (k.poslednje && k.poslednje.ok ? k.poslednje.ukupno : 0), 0);
+        x.trend = x.kamere.some((k) => k.trend === 'raste') ? 'raste' : x.kamere.some((k) => k.trend === 'pada') ? 'pada' : null;
+        const ima = (sm, hr) => x.kamere.some((k) => k.smer === sm && !!k.hr === hr);
+        x.hrUlaz = ima('ulaz', true) && !ima('ulaz', false); x.hrIzlaz = ima('izlaz', true) && !ima('izlaz', false);
+        x.imaUlaz = x.kamere.some((k) => k.smer === 'ulaz'); x.imaIzlaz = x.kamere.some((k) => k.smer === 'izlaz');
+        return x;
+      });
+    }
+    /* ---------- spisak prelaza: jedan red po prelazu (ulaz/izlaz), dodir otvara kamere ispod ---------- */
+    const nivoKl = (m) => (m == null || m < 0 ? '' : m <= 10 ? 'mirno' : m <= 20 ? 'umereno' : m <= 30 ? 'guzva' : 'velika');
+    const otvoreni = new Set();
+    let redosled = 'red';
+    try { filter = localStorage.getItem('gr-filter') || ''; redosled = localStorage.getItem('gr-red') || 'red'; } catch (e) { /* bez memorije */ }
+    function prelazi() {
+      const po = {}; grupe().forEach((x) => { po[x.prelaz] = x; });
+      const baza = stanje && stanje.prelazi && stanje.prelazi.length ? stanje.prelazi : Object.values(po).map((x) => ({ naziv: x.prelaz, drzava: x.drzava }));
+      return baza.map((p) => {
+        const x = po[p.naziv] || { kamere: [], vozila: 0, trend: null, ulaz: null, izlaz: null, hrUlaz: false, hrIzlaz: false, imaUlaz: false, imaIzlaz: false };
+        /* zvanični podatak (admin) ima prednost; inače procena sa kamera (/api/granice je već spojio oba) */
+        const vr = (sm) => { const c = p.cekanje && p.cekanje[sm]; if (c && c.auto != null) return { minuta: c.auto, plus: !!c.autoPlus, izvorProcene: c.autoIzvor || null, vreme: c.autoVreme || null, zvanicno: !c.autoProcena }; return x[sm]; };
+        return Object.assign({}, x, { naziv: p.naziv, drzava: p.drzava, susedni: p.susedni, tip: p.tip, napomena: p.napomena, ulaz: vr('ulaz'), izlaz: vr('izlaz') });
+      });
+    }
+    function vrednost(v, bez, dopuna) {
+      if (!v) return `<span class="vr"><b class="n">—</b><small>${esc(bez)}</small></span>`;
+      const nula = v.minuta === 0;   // „bez čekanja“ je predugačko za krupan broj
+      const delovi = v.delovi ? v.delovi.map((d) => ({ hr: 'HR ', hu: 'HU ' }[d.strana] || 'SRB ') + d.minuta).join(' + ') + ' min' : '';   // čeka se redom na obe kontrole
+      const ispod = starost(v.izvorProcene, v.vreme, true) || delovi || (nula ? 'bez čekanja' : '') || dopuna || (v.zvanicno ? 'zvanično' : '');
+      return `<span class="vr"><b class="${klasa(v.minuta)}">${esc(nula ? '0 min' : minTekst(v.minuta, v.plus, !v.zvanicno))}</b><small>${esc(ispod)}</small></span>`;
+    }
+    function nacrtajSpisak() {
+      const sve = prelazi();
+      if (!sve.length) { $('#spisak').innerHTML = '<div class="prazno">Kamere još nisu izmerene – prvi podaci za par minuta.</div>'; return; }
+      const drzave = [...new Set(sve.map((p) => p.drzava))];
+      if (filter && !drzave.includes(filter)) filter = '';
+      $('#filteri').innerHTML = `<button type="button" class="fcip${!filter ? ' aktivan' : ''}" data-d="">Sve</button>` + drzave.map((d) => `<button type="button" class="fcip${filter === d ? ' aktivan' : ''}" data-d="${esc(d)}">${esc(d)}</button>`).join('');
+      $('#sp-red').value = redosled;
+      const m = (v) => (v ? v.minuta : null);
+      const kljuc = { red: (p) => rang(p.naziv), izlaz: (p) => (m(p.izlaz) == null ? 1e4 : m(p.izlaz)), ulaz: (p) => (m(p.ulaz) == null ? 1e4 : m(p.ulaz)), guzva: (p) => -Math.max(m(p.ulaz) ?? -1, m(p.izlaz) ?? -1) }[redosled] || ((p) => rang(p.naziv));
+      const lista = sve.filter((p) => !filter || p.drzava === filter).sort((a, b) => kljuc(a) - kljuc(b) || rang(a.naziv) - rang(b.naziv));
+      $('#spisak').innerHTML = `<div class="sp-zag"><span>Prelaz</span><span>U Srbiju</span><span>Iz Srbije</span><span></span></div>` + lista.map((p) => {
+        const nivo = nivoKl(Math.max(m(p.ulaz) ?? -1, m(p.izlaz) ?? -1)), otv = otvoreni.has(p.naziv);
+        const meta = [p.vozila ? p.vozila + ' vozila' : '', p.trend === 'raste' ? '<span class="r">▲ raste</span>' : p.trend === 'pada' ? '<span class="p">▼ opada</span>' : ''].filter(Boolean).join(' · ');
+        return `<div class="pr ${nivo}${otv ? ' otvoren' : ''}" data-p="${esc(p.naziv)}">
+          <button type="button" class="pr-glava" aria-expanded="${otv}"><span class="pr-ime"><b>${esc(p.naziv)}</b><small>${esc([p.drzava, p.susedni ? '↔ ' + p.susedni : '', p.tip].filter(Boolean).join(' · '))}</small>${meta ? `<small>${meta}</small>` : ''}</span>
+            ${vrednost(p.ulaz, p.imaUlaz ? 'nema merenja' : 'nema kamere', p.hrUlaz ? 'HR strana' : '')}${vrednost(p.izlaz, p.imaIzlaz ? 'nema merenja' : 'nema kamere', p.hrIzlaz ? 'HR strana' : '')}<span class="pr-str" aria-hidden="true">›</span></button>
+          <div class="pr-telo">${otv ? teloPrelaza(p) : ''}</div></div>`;
+      }).join('');
+    }
+    function teloPrelaza(p) {
+      const info = [p.susedni || p.tip ? `<span>${esc([p.susedni ? '↔ ' + p.susedni : '', p.tip].filter(Boolean).join(' · '))}</span>` : '', `<span>${kamTekst(p.kamere.length)}</span>`, `<a href="/statistika?prelaz=${encodeURIComponent(p.naziv)}">Statistika gužvi →</a>`,
+        ...['ulaz', 'izlaz'].flatMap((sm) => (p[sm] && Array.isArray(p[sm].zvanicno) ? p[sm].zvanicno : [])).length ? [`<span>Zvanično: ${['ulaz', 'izlaz'].flatMap((sm) => (p[sm] && Array.isArray(p[sm].zvanicno) ? p[sm].zvanicno : []).map((z) => `${sm === 'ulaz' ? 'ulaz u Srbiju' : 'izlaz iz Srbije'} ${esc(z.tekst)}${z.kolonaKm ? ', kolona ' + z.kolonaKm + ' km' : ''} (${esc(z.opis)}, ${esc(pre(z.vreme))})`)).join(' · ')}</span>`] : [], p.napomena ? `<span class="nap">${esc(p.napomena)}</span>` : ''].join('');
+      return `<div class="pr-info">${info}</div>${p.kamere.length ? `<div class="kam-mreza">${p.kamere.map((k) => karta(k, kamere.satSad)).join('')}</div>` : '<div class="prazno">Za ovaj prelaz još nema kamera.</div>'}`;
+    }
+    $('#spisak').addEventListener('click', (e) => {
+      const sl = e.target.closest('.kam-slika[data-slika]');
+      if (sl) { if (!sl.dataset.slika) return; $('#kam-modal-slika').src = sl.dataset.slika; $('#kam-modal-tekst').textContent = sl.dataset.naziv; $('#kam-modal').classList.add('otvoren'); return; }
+      const g = e.target.closest('.pr-glava'); if (!g) return;
+      const pr = g.parentElement, ime = pr.dataset.p, otv = !otvoreni.has(ime);
+      if (otv) otvoreni.add(ime); else otvoreni.delete(ime);
+      pr.classList.toggle('otvoren', otv); g.setAttribute('aria-expanded', otv);
+      const telo = pr.querySelector('.pr-telo');
+      if (otv) { const p = prelazi().find((x) => x.naziv === ime); telo.innerHTML = p ? teloPrelaza(p) : ''; if (g.getBoundingClientRect().top < 0) g.scrollIntoView({ block: 'start' }); }
+    });
+    $('#filteri').addEventListener('click', (e) => { const b = e.target.closest('.fcip'); if (!b) return; filter = b.dataset.d; try { localStorage.setItem('gr-filter', filter); } catch (er) { /* bez memorije */ } nacrtajSpisak(); });
+    $('#sp-red').addEventListener('change', (e) => { redosled = e.target.value; try { localStorage.setItem('gr-red', redosled); } catch (er) { /* bez memorije */ } nacrtajSpisak(); });
+
+    /* ---------- planer puta ---------- */
+    const trajanje = (m) => (m < 60 ? m + ' min' : Math.floor(m / 60) + ' h' + (m % 60 ? ' ' + (m % 60) + ' min' : ''));
+    const IZVOR_CEK = { uzivo: 'uživo sa kamere', sada: 'sadašnje stanje', mesano: 'procena za vreme dolaska', tipicno: 'tipično u to doba', nepoznato: 'nema podataka – računato 15 min' };
+    const PADEZ = { 'Mađarska': ['Mađarske', 'Mađarskoj'], 'Hrvatska': ['Hrvatske', 'Hrvatskoj'], 'Bosna i Hercegovina': ['BiH', 'BiH'], 'Crna Gora': ['Crne Gore', 'Crnoj Gori'], 'Severna Makedonija': ['Severne Makedonije', 'Severnoj Makedoniji'], 'Bugarska': ['Bugarske', 'Bugarskoj'], 'Rumunija': ['Rumunije', 'Rumuniji'] };
+    const izabrano = { od: null, do: null };
+    function pretraga(polje) {
+      const inp = $('#rt-' + polje), lista = $('#rt-' + polje + '-lista'); let tajmer = null, rez = [], akt = -1, zahtev = 0;
+      const zatvori = () => { lista.classList.remove('otvorena'); akt = -1; };
+      const izaberi = (m) => { izabrano[polje] = m; inp.value = m.ime + (m.blizu ? ' (' + m.blizu + ')' : '') + ', ' + m.drzava; zatvori(); try { localStorage.setItem('rt-' + polje, JSON.stringify(m)); } catch (e) { /* bez memorije */ } };
+      const nacrtaj = () => {
+        lista.innerHTML = rez.map((m, i) => `<button type="button" data-i="${i}" class="${i === akt ? 'akt' : ''}"><span>${esc(m.ime)}${m.blizu ? ` <small>· ${esc(m.blizu)}</small>` : ''}</span><small>${esc(m.drzava)}</small></button>`).join('');
+        lista.classList.toggle('otvorena', rez.length > 0);
+      };
+      inp.addEventListener('input', () => {
+        izabrano[polje] = null; clearTimeout(tajmer);
+        const q = inp.value.trim(); if (q.length < 2) { rez = []; nacrtaj(); return; }
+        tajmer = setTimeout(async () => {
+          const moj = ++zahtev;
+          try { const r = await fetch('/api/granice/mesta?q=' + encodeURIComponent(q)); const j = await r.json(); if (moj !== zahtev) return; rez = Array.isArray(j) ? j : []; akt = rez.length ? 0 : -1; nacrtaj(); } catch (e) { /* mreža */ }
+        }, 150);
+      });
+      inp.addEventListener('keydown', (e) => {
+        if (!lista.classList.contains('otvorena')) return;
+        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); akt = (akt + (e.key === 'ArrowDown' ? 1 : rez.length - 1)) % rez.length; nacrtaj(); }
+        else if (e.key === 'Enter' && akt >= 0) { e.preventDefault(); izaberi(rez[akt]); }
+        else if (e.key === 'Escape') zatvori();
+      });
+      inp.addEventListener('blur', () => setTimeout(() => { if (!izabrano[polje] && rez.length && inp.value.trim().length >= 2) izaberi(rez[0]); zatvori(); }, 150));
+      lista.addEventListener('mousedown', (e) => { const b = e.target.closest('button'); if (b) { e.preventDefault(); izaberi(rez[Number(b.dataset.i)]); } });
+      try { const m = JSON.parse(localStorage.getItem('rt-' + polje) || 'null'); if (m && m.id) izaberi(m); } catch (e) { /* bez memorije */ }
+      return { izaberi };
+    }
+    const poljeOd = pretraga('od'), poljeDo = pretraga('do');
+    $('#rt-zameni').addEventListener('click', () => { const a = izabrano.od, b = izabrano.do; if (b) poljeOd.izaberi(b); if (a) poljeDo.izaberi(a); });
+    function navigacija(r, o) {
+      const tacka = (x) => x.lat.toFixed(5) + ',' + x.lon.toFixed(5);
+      return 'https://www.google.com/maps/dir/?api=1&travelmode=driving&origin=' + tacka(r.od) + '&destination=' + tacka(r.do) + '&waypoints=' + o.prelazi.map(tacka).join('%7C');
+    }
+    function cekTekst(p) { const c = p.cekanje; return (c.minuta == null ? '?' : minTekst(c.minuta, c.plus, true)); }
+    /* kamere prelaza na koji šaljemo korisnika, u smeru kojim ide (ulaz = MUP ulaz i HR strana) – da vidi kako tamo izgleda */
+    function kamereRute(o) {
+      if (!kamere) return '';
+      return o.prelazi.map((p) => {
+        const lista = kamere.kamere.filter((k) => k.prelaz === p.naziv && k.slika && k.smer === p.smer).slice(0, 3);
+        if (!lista.length) return '';
+        return `<div class="rt-kam-nas">Kamere: ${esc(p.naziv)} – ${p.smer === 'izlaz' ? 'izlaz iz Srbije' : 'ulaz u Srbiju'}</div><div class="rt-kamere">${lista.map((k) => {
+          const q = k.poslednje; const ok = q && q.ok;
+          return `<figure class="rt-kam"><div class="kam-slika" data-slika="${esc(k.slika)}" data-naziv="${esc(k.naziv)}"><img src="${esc(k.slika)}" alt="${esc(k.naziv)}" loading="lazy"></div><figcaption><span>${esc(k.hr ? k.naziv.replace(/^.*\(HR strana\) – /, 'HR strana, ') : k.smer === 'ulaz' ? 'ulaz u Srbiju' : 'izlaz iz Srbije')}</span><span>${ok ? `<b>${q.ukupno}</b> vozila · ` : ''}${q ? pre(q.vreme) : ''}</span></figcaption></figure>`;
+        }).join('')}</div>`;
+      }).join('');
+    }
+    function nacrtajRutu(r) {
+      const el = $('#rt-rez');
+      if (r.greska || r.poruka) { el.innerHTML = `<div class="rt-greska">${esc(r.greska || r.poruka)}</div>`; return; }
+      const [naj] = r.opcije; const glavni = r.opcije.find((o) => o.glavni);
+      const imePrelaza = (o) => o.prelazi.map((p) => p.naziv).join(' → ');
+      const kaTekst = (o) => o.prelazi.map((p) => { const f = PADEZ[p.ka] || [p.ka, p.ka]; return p.smer === 'ulaz' ? 'ulaz iz ' + f[0] : 'izlaz ka ' + f[1]; }).join(', ');
+      let uporedi;
+      if (naj === glavni) {
+        const drugi = r.opcije[1];
+        uporedi = 'Ovo je i najkraći put – sada nema razloga za zaobilaženje.' + (drugi && drugi.ukupnoMin - naj.ukupnoMin <= 10 ? ` Približno isto vreme daje i ${imePrelaza(drugi)} (${trajanje(drugi.ukupnoMin)}).` : '');
+      } else {
+        const dKm = naj.km - glavni.km, dMin = glavni.ukupnoMin - naj.ukupnoMin;
+        uporedi = `U odnosu na ${esc(imePrelaza(glavni))} (najkraći put, čekanje ≈ ${glavni.cekanjeMin} min): <b>${dKm > 0 ? dKm + ' km duže' : dKm < 0 ? -dKm + ' km kraće' : 'ista kilometraža'}, ali oko ${trajanje(dMin)} brže</b>.`;
+      }
+      const cekanja = naj.prelazi.map((p) => `${r.opcije[0].prelazi.length > 1 ? esc(p.naziv) + ': ' : ''}<b>${esc(cekTekst(p))}</b> <small>(${esc(IZVOR_CEK[p.cekanje.izvor] || '')})</small>`).join(' · ');
+      const red = (o, i) => `<div class="rt-o${i === 0 ? ' najbolja' : ''}"><div class="rt-o-ime"><b>${esc(imePrelaza(o))}</b><small>${esc(kaTekst(o))}${o.glavni ? ' · najkraći put' : ''}</small></div><div class="rt-o-uk"><b>${trajanje(o.ukupnoMin)}</b><small>stižete ${vreme(o.stizete)}</small></div>
+        <div class="rt-o-det"><span>čekanje ${o.prelazi.map((p) => `<span class="cek ${klasa(p.cekanje.minuta)}">${esc(cekTekst(p))}</span>`).join(' + ')}</span><span>vožnja ${trajanje(o.voznjaMin)} · ${o.km} km</span><span>na granici ${o.prelazi.map((p) => vreme(p.dolazak)).join(' / ')}</span></div></div>`;
+      el.innerHTML = `<div class="rt-pre"><span class="lab">Preporuka · ${esc(r.od.ime)} → ${esc(r.do.ime)}</span>
+        <div class="ime">${esc(imePrelaza(naj))} <small>${esc(kaTekst(naj))}</small></div>
+        <div class="brojke"><span>Ukupno <b>${trajanje(naj.ukupnoMin)}</b></span><span><b>${naj.km} km</b></span><span>Čekanje ${cekanja}</span><span>Na granici oko <b>${naj.prelazi.map((p) => vreme(p.dolazak)).join(' / ')}</b></span></div>
+        <p class="uporedi">${uporedi}</p>
+        <a href="${esc(navigacija(r, naj))}" target="_blank" rel="noopener">Otvori ovu rutu u navigaciji ↗</a></div>
+        ${r.napomena ? `<p class="rt-greska">${esc(r.napomena)}</p>` : ''}
+        ${kamereRute(naj)}
+        <div class="rt-opc"><h3>Sve opcije</h3>${r.opcije.map(red).join('')}</div>
+        <p class="rt-nap">Vreme vožnje je sa OpenStreetMap mape (bez trenutnog saobraćaja); čekanje je procena sa kamera – za dolazak kasnije od sat-dva sve više se oslanja na tipičnu gužvu za taj dan i sat. ${naj.kapije && naj.kapije.length ? 'Deo puta kroz ' + esc([r.od, r.do].filter((x) => x.van).map((x) => x.drzava).join(' i ')) + ' je računat približno.' : ''}</p>`;
+    }
+    $('#rt-forma').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!izabrano.od || !izabrano.do) { nacrtajRutu({ greska: 'Izaberite mesto polaska i odredište sa spiska koji se pojavi dok kucate.' }); return; }
+      const dugme = $('#rt-dugme'); dugme.disabled = true; dugme.textContent = 'Računam…';
+      try {
+        const polazak = new Date(Date.now() + Number($('#rt-kad').value) * 3600e3).toISOString();
+        const r = await fetch(`/api/granice/ruta?od=${izabrano.od.id}&do=${izabrano.do.id}&polazak=${encodeURIComponent(polazak)}&eu=${$('#rt-eu').checked ? 1 : 0}`);
+        nacrtajRutu(await r.json());
+      } catch (err) { nacrtajRutu({ greska: 'Planer trenutno ne radi, pokušajte za par minuta.' }); }
+      dugme.disabled = false; dugme.textContent = 'Nađi prelaz';
+    });
+
+    async function ucitaj() {
+      try {
+        const [a, b] = await Promise.all([fetch('/api/granice', { cache: 'no-store' }), fetch('/api/granice/kamere', { cache: 'no-store' })]);
+        if (a.ok) stanje = await a.json(); if (b.ok) kamere = await b.json();
+        $('#azurirano').innerHTML = kamere && kamere.azurirano ? `<span class="uzivo"></span>Uživo · merenje u <b>${vreme(kamere.azurirano)}</b><span class="dop"><br>osvežava se svakih ${kamere.interval} min</span>` : '';
+        nacrtajSpisak();
+      } catch (e) { $('#azurirano').textContent = 'Podaci trenutno nisu dostupni.'; }
+    }
+    $('#kam-modal').addEventListener('click', () => $('#kam-modal').classList.remove('otvoren'));
+    $('#rt-rez').addEventListener('click', (e) => { const el = e.target.closest('.kam-slika[data-slika]'); if (!el) return; $('#kam-modal-slika').src = el.dataset.slika; $('#kam-modal-tekst').textContent = el.dataset.naziv; $('#kam-modal').classList.add('otvoren'); });
+    ucitaj(); setInterval(ucitaj, 60 * 1000);
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+node_modules
+data
+osrm
+.env
+.git
+granice.zip
+docs
+claude-memory
+*.md
+.DS_Store

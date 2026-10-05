@@ -1,0 +1,4 @@
+# Ne objavljuje se na javnom GitHub ogledalu (deploy/objavi-github.sh koristi git archive)
+CLAUDE.md export-ignore
+claude-memory export-ignore
+docs/SERVER.md export-ignore

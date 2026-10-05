@@ -1,0 +1,7 @@
+node_modules/
+data/
+.env
+granice.zip
+docs/PRISTUP.md
+.DS_Store
+osrm/

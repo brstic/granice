@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="sr-Latn">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Admin – Granice Srbije</title><meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/svg+xml" href="/logo.svg">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap">
+<style>
+  :root { --plava: #253965; --tamna: #10254f; --akcent: #253965; --akcent-blagi: #d2e7ff; --akcent-blagi-2: #f3f9ff; --linija: #d7d8d6; --mastilo: #111; --tekst-2: #555; --povrs-2: #f2f2f2; --crvena: #c6363c; --zelena: #017932; --telo: "Montserrat", Arial, Helvetica, sans-serif; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: #f4f5f7; color: var(--mastilo); font: 500 14px/1.55 var(--telo); -webkit-font-smoothing: antialiased; }
+  a { color: var(--plava); }
+  .vrh { background: var(--plava); color: #fff; }
+  .vrh-u { max-width: 1280px; margin: 0 auto; padding: 10px 20px; display: flex; align-items: center; gap: 12px; }
+  .vrh img { width: 30px; height: 30px; display: block; }
+  .vrh b { font-size: 15px; } .vrh span { flex: 1; }
+  .vrh a, .vrh button { color: #fff; font: 600 13px var(--telo); text-decoration: none; background: none; border: 0; cursor: pointer; padding: 6px 8px; }
+  main { max-width: 1280px; margin: 0 auto; padding: 20px 20px 56px; }
+  .tabovi { display: flex; gap: 4px; background: var(--povrs-2); padding: 4px; width: max-content; max-width: 100%; margin-bottom: 16px; flex-wrap: wrap; }
+  .tabovi button { border: 0; background: transparent; padding: 8px 16px; font: 600 14px var(--telo); color: var(--tekst-2); cursor: pointer; }
+  .tabovi button.aktivan { background: #fff; color: var(--mastilo); box-shadow: 0 1px 3px rgba(16,37,79,.12); }
+  h2 { font-size: 18px; margin: 0 0 10px; color: var(--plava); }
+  .dugme { border: 1px solid var(--akcent); background: #fff; color: var(--akcent); padding: 9px 16px; cursor: pointer; font: 600 13.5px var(--telo); display: inline-flex; align-items: center; gap: 6px; text-decoration: none; }
+  .dugme:hover { background: var(--akcent-blagi-2); } .dugme:disabled { opacity: .45; cursor: default; }
+  .dugme.mali { padding: 6px 10px; font-size: 12.5px; }
+  .dugme.glavno { background: var(--akcent); color: #fff; } .dugme.glavno:hover { background: var(--tamna); }
+  .dugme.opasno { color: var(--crvena); border-color: var(--crvena); }
+  .akc { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .pod-trake { position: sticky; bottom: 0; z-index: 5; display: flex; align-items: center; gap: 10px; padding: 12px 16px; background: #fff; border: 1px solid var(--linija); border-top: 3px solid var(--akcent); box-shadow: 0 -6px 18px rgba(16,37,79,.08); }
+  .pod-poruka { font-size: 13px; color: var(--tekst-2); }
+  .prijava { max-width: 380px; margin: 60px auto; background: #fff; border: 1px solid var(--linija); border-top: 4px solid var(--plava); padding: 26px 24px; }
+  .prijava label { display: block; font-size: 12px; font-weight: 700; color: var(--tekst-2); margin: 14px 0 4px; text-transform: uppercase; letter-spacing: .05em; }
+  .prijava input { width: 100%; font: 500 16px var(--telo); padding: 11px 12px; border: 1px solid #b9bcc2; }
+  .prijava .dugme { width: 100%; justify-content: center; margin-top: 18px; padding: 12px; }
+  .greska { color: var(--crvena); font-size: 13px; min-height: 1.4em; margin: 10px 0 0; }
+  .kutija { background: #fff; border: 1px solid var(--linija); padding: 16px 18px; margin-bottom: 16px; }
+  .info { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; }
+  .info div { background: #f7f9fc; border: 1px solid #e6e8ec; padding: 10px 12px; font-size: 13.5px; }
+  .info b { display: block; font-size: 11.5px; color: var(--tekst-2); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 2px; }
+  .tabla { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; background: #fff; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid #eceded; vertical-align: top; }
+  th { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--tekst-2); background: #fafbfd; white-space: nowrap; }
+  .ok { color: var(--zelena); font-weight: 700; } .ne { color: var(--crvena); font-weight: 700; }
+  .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--tamna); color: #fff; padding: 11px 18px; font-size: 13.5px; z-index: 60; box-shadow: 0 6px 20px rgba(0,0,0,.2); max-width: calc(100% - 32px); }
+  .toast.greska { background: var(--crvena); }
+  /* ---- kamere: crtanje zona ---- */
+  .kz { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 16px; align-items: start; }
+  .kz-lista { background: #fff; border: 1px solid var(--linija); max-height: calc(100vh - 40px); overflow-y: auto; position: sticky; top: 12px; }
+  .kz-lista h3 { font-size: 10.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--tekst-2); margin: 0; padding: 12px 12px 4px; }
+  .kz-lista button { display: flex; justify-content: space-between; align-items: center; gap: 8px; width: 100%; border: 0; background: none; text-align: left; padding: 7px 12px; font: 500 13px var(--telo); color: var(--mastilo); cursor: pointer; }
+  .kz-lista button:hover { background: var(--akcent-blagi-2); }
+  .kz-lista button.akt { background: var(--akcent-blagi); color: var(--akcent); font-weight: 700; }
+  .kz-lista .izm { width: 8px; height: 8px; border-radius: 50%; background: #e8a317; flex: none; }
+  .kz-ed { background: #fff; border: 1px solid var(--linija); padding: 16px 18px; min-width: 0; }
+  .kz-glava { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: flex-start; }
+  .kz-glava h2 { margin: 0 0 2px; }
+  .kz-glava small { font-size: 12.5px; color: var(--tekst-2); }
+  .kz-det { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer; }
+  .kz-alati { display: flex; gap: 4px; flex-wrap: wrap; margin: 14px 0 4px; }
+  .kz-alati button { border: 1px solid var(--linija); background: var(--povrs-2); padding: 8px 14px; font: 600 13px var(--telo); color: var(--mastilo); cursor: pointer; display: inline-flex; gap: 8px; align-items: center; }
+  .kz-alati button i { width: 14px; height: 4px; display: inline-block; }
+  .kz-alati button.akt { background: var(--akcent); color: #fff; border-color: var(--akcent); }
+  .kz-uputstvo { font-size: 13px; color: var(--tekst-2); margin: 8px 0 10px; line-height: 1.5; }
+  .kz-scena { position: relative; background: #1b1f27; user-select: none; -webkit-user-select: none; touch-action: none; }
+  .kz-scena img { display: block; width: 100%; height: auto; min-height: 240px; }
+  .kz-scena svg { position: absolute; inset: 0; width: 100%; height: 100%; cursor: crosshair; }
+  .kz-tiho { opacity: .45; pointer-events: none; }
+  .kz-tacka { fill: #fff; stroke: #10254f; cursor: move; } .kz-tacka.izabrana { fill: #ffdf4a; }
+  .kz-dodaj { fill: rgba(51, 255, 102, .75); stroke: #0b3; cursor: copy; }
+  .kz-vuci { cursor: move; }
+  .kz-ucitava { position: absolute; inset: 0; display: grid; place-items: center; color: #fff; font-size: 14px; background: rgba(0, 0, 0, .55); text-align: center; padding: 20px; }
+  .kz-opcije { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 10px; font-size: 13px; color: var(--tekst-2); }
+  .kz-traka { margin: 14px 0 0; flex-wrap: wrap; }
+  @media (max-width: 700px) { .tabovi-admin { flex-wrap: wrap; } .tabovi-admin button { padding: 8px 10px; } .kz-ed { padding: 12px; } }
+  @media (max-width: 860px) { .kz { grid-template-columns: 1fr; } .kz-lista { position: static; max-height: 230px; } }
+  @media (max-width: 700px) { main { padding: 14px 10px 40px; } .vrh-u { padding: 8px 12px; } .pod-trake { padding: 8px 10px; gap: 6px; flex-wrap: wrap; } .pod-trake .pod-poruka { flex-basis: 100%; font-size: 12px; } .pod-trake > span[style] { display: none; } }
+</style>
+</head>
+<body>
+<header class="vrh"><div class="vrh-u"><img src="/logo.svg" alt=""><b>Granice · admin</b><span></span><a href="/" target="_blank" rel="noopener">Sajt ↗</a><button type="button" id="odjava" hidden>Odjava</button></div></header>
+<main>
+  <form class="prijava" id="prijava" hidden autocomplete="on">
+    <h2>Prijava</h2>
+    <label for="p-k">Korisničko ime</label><input id="p-k" name="username" autocomplete="username" required autocapitalize="off">
+    <label for="p-l">Lozinka</label><input id="p-l" name="password" type="password" autocomplete="current-password" required>
+    <button class="dugme glavno" type="submit">Prijavi se</button>
+    <p class="greska" id="p-greska"></p>
+  </form>
+  <div id="panel" hidden>
+    <nav class="tabovi" id="tabovi"><button data-tab="kamere" class="aktivan">Kamere</button><button data-tab="stanje">Stanje sistema</button></nav>
+    <section id="tab-kamere"></section>
+    <section id="tab-stanje" hidden></section>
+  </div>
+</main>
+<div class="toast" id="toast" hidden role="status"></div>
+<script>
+(function () {
+  const $ = (s, r) => (r || document).querySelector(s), $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const kad = (s) => { if (!s) return ''; const d = new Date(s), p = (n) => String(n).padStart(2, '0'); return `${p(d.getDate())}.${p(d.getMonth() + 1)}.${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}`; };
+  let toastT; const toast = (t, g) => { const el = $('#toast'); el.textContent = t; el.classList.toggle('greska', !!g); el.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => { el.hidden = true; }, 3500); };
+  const potvrdi = (naslov, tekst) => Promise.resolve(window.confirm(naslov + '\n\n' + tekst));
+  async function api(m, u, b) { const r = await fetch(u, { method: m, headers: b ? { 'Content-Type': 'application/json' } : {}, body: b ? JSON.stringify(b) : undefined }); const j = await r.json().catch(() => ({})); if (r.status === 401 && !u.endsWith('/prijava')) { prikazi(false); } if (!r.ok) throw new Error(j.greska || 'Greška ' + r.status); return j; }
+
+  /* tabovi */
+  let aktivan = 'kamere';
+  $$('#tabovi button').forEach((b) => b.addEventListener('click', () => { aktivan = b.dataset.tab; $$('#tabovi button').forEach((x) => x.classList.toggle('aktivan', x === b)); $$('#panel > section').forEach((s) => { s.hidden = s.id !== 'tab-' + aktivan; }); ({ kamere, stanje })[aktivan](); }));
+
+  /* stanje sistema: radnik, rutiranje, poslednje merenje po kameri */
+  async function stanje() {
+    const el = $('#tab-stanje'); el.innerHTML = '<p>Učitavam…</p>';
+    const [s, k, kal] = await Promise.all([api('GET', '/api/admin/stanje'), api('GET', '/api/granice/kamere'), api('GET', '/api/admin/kalibracija').catch(() => null)]);
+    const pre = (iso) => { const m = Math.round((Date.now() - new Date(iso)) / 60000); return m < 60 ? m + ' min' : Math.round(m / 60) + ' h'; };
+    el.innerHTML = `<div class="kutija"><h2>Sistem</h2><div class="info">
+        <div><b>Poslednje merenje</b>${k.azurirano ? kad(k.azurirano) + ' (pre ' + pre(k.azurirano) + ')' : '—'}</div>
+        <div><b>Uspešnih merenja u poslednjih sat</b>${s.poslednjiSat.ok || 0} od ${s.poslednjiSat.n || 0}</div>
+        <div><b>Rutiranje (OSRM)</b>${s.osrm ? '<span class="ok">radi</span>' : '<span class="ne">ne radi</span>'}</div>
+        <div><b>Baza mesta za planer</b>${s.mestaDb ? '<span class="ok">ima</span>' : '<span class="ne">nema</span>'}</div>
+        <div><b>Merenja u bazi</b>${s.merenja} od ${esc((s.od || '').slice(0, 10))}</div>
+        <div><b>Sajt radi od</b>${kad(s.radiOd)} · Node ${esc(s.node)}</div></div></div>
+      <div class="kutija"><h2>Kamere</h2><div class="tabla"><table><tr><th>Kamera</th><th>Poslednje</th><th>Detektovano</th><th>Procena</th><th>Greška</th></tr>${k.kamere.map((x) => { const p = x.poslednje || {}; return `<tr><td>${esc(x.naziv)}</td><td>${p.vreme ? (p.ok ? '<span class="ok">✓</span> ' : '<span class="ne">✗</span> ') + 'pre ' + pre(p.vreme) : '—'}</td><td>${p.ok ? p.ukupno : '—'}</td><td>${x.procena ? esc(x.procena.tekst) + (x.procena.izvorProcene ? ' <small>(' + (x.procena.izvorProcene === 'tipicno' ? 'tipično' : 'staro') + ')</small>' : '') : '—'}</td><td style="max-width:360px;font-size:12px;color:#8a2a2e">${esc(p.ok ? '' : (p.greska || '').slice(0, 140))}</td></tr>`; }).join('')}</table></div></div>`
+      + (kal ? `<div class="kutija"><h2>Mi vs. MUP RH (auta)</h2><p style="font-size:13px;color:#555">Zvanično čekanje MUP RH sa hak.hr (samo hrvatska kontrola) i naša procena sa HAK kamera u istom trenutku (±5 min). Mađarska policija meri samo mađarsku kontrolu koju naše kamere ne vide – zato ne ulazi u poređenje nego se dodaje u zbir na stanju („SRB 1 + HU 30 min“). Zvanično su grube kategorije („do 30 min“ = najviše 30). Odnos &gt; 1 = precenjujemo.</p>
+        ${kal.sazetak.length ? `<div class="tabla"><table><tr><th>Izvor</th><th>Prelaz</th><th>Smer</th><th>Poređenja</th><th>Mi iznad zvaničnog</th><th>Medijana mi / zvanično</th></tr>${kal.sazetak.map((x) => `<tr><td>${esc(x.izvor)}</td><td>${esc(x.prelaz)}</td><td>${x.smer === 'ulaz' ? 'ulaz u Srbiju' : 'izlaz iz Srbije'}</td><td>${x.n}</td><td>${x.iznad} (${Math.round((x.iznad / x.n) * 100)} %)</td><td>${x.medijanaOdnosa ?? '—'}</td></tr>`).join('')}</table></div>` : '<p>Još nema poređenja – radnik čita hak.hr na svakih 15 min.</p>'}
+        ${kal.lista.length ? `<div class="tabla"><table><tr><th>Vreme</th><th>Izvor</th><th>Prelaz</th><th>Smer</th><th>Zvanično</th><th>Mi</th><th>Vozila</th></tr>${kal.lista.slice(0, 60).map((x) => `<tr><td>${kad(x.vreme)}</td><td>${esc(x.izvor)}</td><td>${esc(x.prelaz)}</td><td>${x.smer === 'ulaz' ? 'ulaz' : 'izlaz'}</td><td>${esc(x.zvanicno)}${x.kolonaKm ? ' · ' + x.kolonaKm + ' km' : ''}</td><td>${x.mi == null ? '—' : x.mi + ' min'}</td><td>${x.vozila ?? '—'}</td></tr>`).join('')}</table></div>` : ''}</div>` : '');
+  }
+
+  /* ---------- kamere: gde radnik gleda vozila (zona kolone, linija šaltera, rep kolone, zum isečci) ----------
+     Sve koordinate su relativne (0–1) u odnosu na kadar; čuva se u data/kamere-podesavanja.json, radnik preuzima u sledećem krugu. */
+  const KZ = { lista: [], kam: null, radna: null, alat: 'roi', izbor: null, vuce: null, nova: null, det: false, W: 704, H: 576 };
+  const kopija = (x) => (x == null ? null : JSON.parse(JSON.stringify(x)));
+  const zone = (k) => ({ roi: kopija(k.roi), linija: kopija(k.linija), puno: kopija(k.puno), zum: kopija(k.zum) });
+  const izmenjeno = () => KZ.kam && JSON.stringify(KZ.radna) !== JSON.stringify(zone(KZ.kam));
+  const UPUTSTVO = {
+    roi: 'Zelena zona: broje se samo vozila čija je <b>donja ivica</b> unutar nje – obuhvatite trake sa kolonom, bez parkinga, nadstrešnica i suprotnog smera. Prevucite tačku da je pomerite, klik na zeleni kružić između dve tačke dodaje novu, desni klik (ili Delete) briše izabranu tačku.',
+    linija: 'Crvena linija šaltera: vozilo koje je pređe <b>u smeru strelice</b> računa se kao prošlo – iz toga se meri protok i čekanje. Povucite po slici da nacrtate novu (od tačke do tačke), prevucite krajeve da je doterate. Broji se samo prelazak između krajeva linije.',
+    puno: 'Žuta linija repa kolone stoji <b>blizu ivice kadra odakle kolona dolazi</b> (rep gore → linija pri vrhu, rep dole → linija pri dnu). Ako četvrto vozilo gledano od te ivice dopre do nje, deo kolone je van kadra i procena računa više vozila. Linija nacrtana na suprotnoj polovini kadra se ne koristi. Kliknite ili prevucite da je pomerite.',
+    zum: 'Plavi zum isečci: deo kadra koji se dodatno uveća da bi model video sitna, daleka vozila (najviše 4). Povucite po slici da nacrtate isečak, prevucite ga da ga pomerite, beli kružić menja veličinu, desni klik briše.',
+  };
+  function kamere() {
+    const el = $('#tab-kamere');
+    if (!el.dataset.gotovo) {
+      el.dataset.gotovo = '1';
+      el.innerHTML = `<div class="kz"><aside class="kz-lista" id="kz-lista"></aside><div class="kz-ed">
+        <div class="kz-glava"><div><h2 id="kz-naziv"></h2><small id="kz-info"></small></div><div class="akc"><label class="kz-det"><input type="checkbox" id="kz-det"> Prikaži poslednju detekciju</label><button type="button" class="dugme mali" id="kz-novi">Nov kadar sa kamere</button></div></div>
+        <div class="kz-alati" id="kz-alati"><button data-alat="roi"><i style="background:#33ff66"></i>Zona kolone</button><button data-alat="linija"><i style="background:#ff5050"></i>Linija šaltera</button><button data-alat="puno"><i style="background:#ffc800"></i>Rep kolone</button><button data-alat="zum"><i style="background:#50a0ff"></i>Zum isečci</button></div>
+        <p class="kz-uputstvo" id="kz-uputstvo"></p>
+        <div class="kz-scena" id="kz-scena"><img id="kz-slika" alt="Kadar kamere"><svg id="kz-svg" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"></svg><div class="kz-ucitava" id="kz-ucitava" hidden></div></div>
+        <div class="kz-opcije" id="kz-opcije"></div>
+        <div class="pod-trake kz-traka"><span class="pod-poruka" id="kz-stanje"></span><span style="flex:1"></span><button type="button" class="dugme mali" id="kz-ponisti">Poništi izmene</button><button type="button" class="dugme mali opasno" id="kz-vrati">Vrati podrazumevano</button><button type="button" class="dugme glavno" id="kz-sacuvaj">Sačuvaj</button></div>
+        <div class="kutija kz-provera"><div class="pod-trake"><h2 style="margin:0">Provera brojanja</h2><span style="flex:1"></span><button type="button" class="dugme mali" id="kz-proveri">Proveri brojanje</button></div>
+          <p style="font-size:13px;color:#555;margin:6px 0">Radnik u sledećem krugu (do 5 min) sačuva sve kadrove jednog gledanja sa stazama vozila: <b style="color:#b89500">žuto</b> = ispred linije, <b style="color:#1f9d3a">zeleno</b> = prošlo, sivo = nepoznato; broj = ID staze, <b style="color:#d00000">PROŠAO</b> = izbrojan prolazak. Ako auto pređe liniju a nema „PROŠAO“, ili ID skače sa auta na auto, brojač greši.</p>
+          <div id="kz-provera"></div></div>
+      </div></div>`;
+      kzVezi();
+    }
+    return kzUcitajListu();
+  }
+  async function kzUcitajListu(id) {
+    KZ.lista = await api('GET', '/api/admin/kamere');
+    const grupe = {}; KZ.lista.forEach((k) => { (grupe[k.prelaz] = grupe[k.prelaz] || []).push(k); });
+    const smer = (k) => (k.smer === 'ulaz' ? 'ulaz u Srbiju' : 'izlaz iz Srbije') + (/\(HR strana\)/.test(k.naziv) ? ' (HR strana)' : '');
+    $('#kz-lista').innerHTML = Object.entries(grupe).map(([p, ks]) => `<h3>${esc(p)}</h3>${ks.map((k) => `<button type="button" data-id="${esc(k.id)}"><span>${esc(smer(k))}</span>${k.izmena ? '<i class="izm" title="Izmenjeno u adminu"></i>' : ''}</button>`).join('')}`).join('');
+    kzIzaberi(id || (KZ.kam && KZ.kam.id) || KZ.lista[0].id, true);
+  }
+  async function kzIzaberi(id, bezPitanja) {
+    if (!bezPitanja && izmenjeno() && !await potvrdi('Nesačuvane izmene', 'Izmene na ovoj kameri nisu sačuvane. Odbaciti ih?', { vrsta: 'opasno', potvrdi: 'Odbaci' })) return;
+    KZ.kam = KZ.lista.find((k) => k.id === id); KZ.radna = zone(KZ.kam); KZ.izbor = null; KZ.nova = null;
+    $$('#kz-lista button').forEach((b) => b.classList.toggle('akt', b.dataset.id === id));
+    $('#kz-naziv').textContent = KZ.kam.naziv;
+    $('#kz-info').innerHTML = esc(KZ.kam.izvor) + (KZ.kam.sirovKad ? ' · kadar od ' + esc(kad(KZ.kam.sirovKad).slice(11)) : '') + (KZ.kam.izmena ? ` · izmenjeno ${esc(kad(KZ.kam.izmena.kad))}${KZ.kam.izmena.ko ? ' (' + esc(KZ.kam.izmena.ko) + ')' : ''}` : ' · podrazumevane zone');
+    kzSlika(false); kzProvera();
+  }
+  /* provera brojanja: poslednja montaža za kameru; dok je zahtev na čekanju, osvežava se na 15 s */
+  let kzProveraTajmer = null;
+  async function kzProvera() {
+    clearTimeout(kzProveraTajmer);
+    const id = KZ.kam.id, el = $('#kz-provera');
+    let p; try { p = await api('GET', '/api/admin/kamere/' + encodeURIComponent(id) + '/provera'); } catch (e) { el.textContent = e.message; return; }
+    if (!KZ.kam || KZ.kam.id !== id) return;
+    const i = p.info;
+    el.innerHTML = (p.zahtevano ? '<p class="pod-poruka">Čeka se sledeći krug radnika (do 5 min)…</p>' : '')
+      + (i ? `<p style="font-size:13px"><b>${esc(kad(i.vreme))}</b> · ${i.kadrova} kadrova za ${i.prozor} s${i.prikazano < i.kadrova ? ' (prikazano ' + i.prikazano + ')' : ''} · staza ${i.staza} · izbrojano prolazaka <b>${i.proslo}</b>${i.pomereno != null ? ' · pomerilo se ' + Math.round(i.pomereno * 100) + ' % vozila' : ''}${i.prolasci.length ? ' · prolasci u ' + i.prolasci.map((d) => d.t + ' s').join(', ') : ''}</p><a href="/api/admin/kamere/${encodeURIComponent(id)}/provera.jpg?v=${encodeURIComponent(i.vreme)}" target="_blank"><img src="/api/admin/kamere/${encodeURIComponent(id)}/provera.jpg?v=${encodeURIComponent(i.vreme)}" alt="Montaža kadrova" style="width:100%;border-radius:6px"></a>` : (p.zahtevano ? '' : '<p style="font-size:13px;color:#777">Za ovu kameru još nije rađena provera.</p>'));
+    if (p.zahtevano) kzProveraTajmer = setTimeout(kzProvera, 15000);
+  }
+  function kzSlika(novi) {
+    const img = $('#kz-slika'), uc = $('#kz-ucitava');
+    uc.hidden = false; uc.textContent = novi ? 'Uzimam svež kadar sa kamere (do 30 s)…' : 'Učitavam kadar…';
+    img.onload = () => { img.style.visibility = ''; uc.hidden = true; KZ.W = img.naturalWidth; KZ.H = img.naturalHeight; $('#kz-svg').setAttribute('viewBox', `0 0 ${KZ.W} ${KZ.H}`); kzCrtaj(); };
+    img.onerror = () => { img.style.visibility = 'hidden'; uc.hidden = false; uc.textContent = 'Kamera trenutno ne daje sliku. Probajte „Nov kadar sa kamere“ kasnije.'; kzCrtaj(); };
+    img.src = KZ.det ? `/api/granice/kamera/${encodeURIComponent(KZ.kam.id)}.jpg?t=${Date.now()}` : `/api/admin/kamere/${encodeURIComponent(KZ.kam.id)}/kadar.jpg?t=${Date.now()}${novi ? '&novi=1' : ''}`;
+  }
+  function kzCrtaj() {
+    const { W, H, radna: z, alat } = KZ; const r = Math.max(W, H) / 110, sw = 'vector-effect="non-scaling-stroke"';
+    const tiho = (a) => (alat === a ? '' : ' class="kz-tiho"'); let h = '';
+    if (z.roi) {
+      h += `<g${tiho('roi')}><polygon points="${z.roi.map((t) => t[0] * W + ',' + t[1] * H).join(' ')}" fill="rgba(51,255,102,.14)" stroke="#33ff66" stroke-width="2" stroke-dasharray="7 4" ${sw} style="pointer-events:none"/>`;
+      if (alat === 'roi' && !KZ.nova) {
+        h += z.roi.map((t, i) => { const n = z.roi[(i + 1) % z.roi.length]; return `<circle class="kz-dodaj" data-tip="roi-dodaj" data-i="${i}" cx="${(t[0] + n[0]) / 2 * W}" cy="${(t[1] + n[1]) / 2 * H}" r="${r * 0.55}" stroke-width="1" ${sw}/>`; }).join('');
+        h += z.roi.map((t, i) => `<circle class="kz-tacka${KZ.izbor === i ? ' izabrana' : ''}" data-tip="roi" data-i="${i}" cx="${t[0] * W}" cy="${t[1] * H}" r="${r}" stroke-width="2" ${sw}/>`).join('');
+      }
+      h += '</g>';
+    }
+    if (KZ.nova) h += `<polyline points="${KZ.nova.map((t) => t[0] * W + ',' + t[1] * H).join(' ')}" fill="none" stroke="#33ff66" stroke-width="2" ${sw} style="pointer-events:none"/>` + KZ.nova.map((t, i) => `<circle class="kz-tacka${i === 0 ? ' izabrana' : ''}" data-tip="${i === 0 ? 'nova-zatvori' : ''}" cx="${t[0] * W}" cy="${t[1] * H}" r="${i === 0 ? r * 1.3 : r * 0.8}" stroke-width="2" ${sw}/>`).join('');
+    (z.zum || []).forEach((q, i) => {
+      h += `<g${tiho('zum')}><rect class="kz-vuci" data-tip="zum" data-i="${i}" x="${q[0] * W}" y="${q[1] * H}" width="${(q[2] - q[0]) * W}" height="${(q[3] - q[1]) * H}" fill="rgba(80,160,255,.12)" stroke="#50a0ff" stroke-width="2" stroke-dasharray="5 3" ${sw}/>${alat === 'zum' ? `<circle class="kz-tacka" data-tip="zum-ugao" data-i="${i}" cx="${q[2] * W}" cy="${q[3] * H}" r="${r}" stroke-width="2" ${sw}/>` : ''}</g>`;
+    });
+    if (z.puno) {
+      const y = z.puno.y * H;
+      h += `<g${tiho('puno')}><line x1="0" y1="${y}" x2="${W}" y2="${y}" stroke="#ffc800" stroke-width="2" stroke-dasharray="6 5" ${sw}/><line class="kz-vuci" data-tip="puno" x1="0" y1="${y}" x2="${W}" y2="${y}" stroke="transparent" stroke-width="${r * 2.4}" style="cursor:ns-resize"/><text x="${W - 8}" y="${z.puno.kraj === 'gore' ? y - 6 : y + r * 2}" text-anchor="end" font-size="${r * 1.6}" font-family="Arial" fill="#ffc800" style="pointer-events:none">rep kolone ${z.puno.kraj === 'gore' ? '▲ gore' : '▼ dole'}</text></g>`;
+    }
+    if (z.linija) {
+      const L = z.linija, x1 = L.x1 * W, y1 = L.y1 * H, x2 = L.x2 * W, y2 = L.y2 * H, dx = x2 - x1, dy = y2 - y1, d = Math.hypot(dx, dy) || 1, zn = L.smer === 'gore' ? -1 : 1;
+      const nx = (-dy / d) * zn, ny = (dx / d) * zn, mx = (x1 + x2) / 2, my = (y1 + y2) / 2, a = r * 4.5, vx = mx + nx * a, vy = my + ny * a;
+      const s1x = vx - nx * r * 1.6 + ny * r * 1.1, s1y = vy - ny * r * 1.6 - nx * r * 1.1, s2x = vx - nx * r * 1.6 - ny * r * 1.1, s2y = vy - ny * r * 1.6 + nx * r * 1.1;
+      h += `<g${tiho('linija')}><line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#ff5050" stroke-width="3" ${sw}/><line x1="${mx}" y1="${my}" x2="${vx}" y2="${vy}" stroke="#ff5050" stroke-width="3" ${sw}/><polygon points="${vx},${vy} ${s1x},${s1y} ${s2x},${s2y}" fill="#ff5050"/>`;
+      h += `<line class="kz-vuci" data-tip="linija" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="transparent" stroke-width="${r * 2.4}"/>`;
+      if (alat === 'linija') h += `<circle class="kz-tacka" data-tip="linija-a" cx="${x1}" cy="${y1}" r="${r}" stroke-width="2" ${sw}/><circle class="kz-tacka" data-tip="linija-b" cx="${x2}" cy="${y2}" r="${r}" stroke-width="2" ${sw}/>`;
+      h += '</g>';
+    }
+    $('#kz-svg').innerHTML = h;
+    $('#kz-uputstvo').innerHTML = UPUTSTVO[alat];
+    $$('#kz-alati button').forEach((b) => b.classList.toggle('akt', b.dataset.alat === alat));
+    const op = { roi: KZ.nova ? `<span>Kliknite tačke redom oko kolone; klik na prvu (žutu) tačku ili „Završi“ zatvara zonu.</span><button type="button" class="dugme mali glavno" data-op="roi-zavrsi" ${KZ.nova.length < 3 ? 'disabled' : ''}>Završi zonu</button><button type="button" class="dugme mali" data-op="roi-odustani">Odustani</button>` : `<button type="button" class="dugme mali" data-op="roi-nova">Nacrtaj novu zonu</button>${z.roi ? '<button type="button" class="dugme mali opasno" data-op="roi-ukloni">Ukloni zonu (broji ceo kadar)</button>' : '<span>Bez zone – broje se sva vozila u kadru.</span>'}`,
+      linija: z.linija ? '<button type="button" class="dugme mali" data-op="linija-obrni">⇅ Obrni smer</button><button type="button" class="dugme mali opasno" data-op="linija-ukloni">Ukloni liniju</button><span>Bez linije nema merenja protoka – čekanje se računa iz broja vozila.</span>' : '<span>Nema linije – povucite po slici od jednog do drugog kraja šaltera.</span>',
+      puno: `<button type="button" class="dugme mali${z.puno && z.puno.kraj === 'gore' ? ' glavno' : ''}" data-op="puno-gore">Rep je gore (vozila idu ka kameri)</button><button type="button" class="dugme mali${z.puno && z.puno.kraj === 'dole' ? ' glavno' : ''}" data-op="puno-dole">Rep je dole (vozila odlaze od kamere)</button>${z.puno ? '<button type="button" class="dugme mali opasno" data-op="puno-ukloni">Ukloni</button>' : ''}`,
+      zum: `<span>${(z.zum || []).length} od 4 isečka.</span>${(z.zum || []).length ? '<button type="button" class="dugme mali opasno" data-op="zum-ukloni">Ukloni sve isečke</button>' : ''}` }[alat];
+    $('#kz-opcije').innerHTML = op;
+    const iz = izmenjeno();
+    $('#kz-stanje').textContent = iz ? 'Nesačuvane izmene.' : KZ.kam.izmena ? 'Sačuvano. Radnik primenjuje zone u sledećem krugu (do 5 min).' : 'Podrazumevane zone.';
+    $('#kz-sacuvaj').disabled = !iz; $('#kz-ponisti').disabled = !iz; $('#kz-vrati').disabled = !KZ.kam.izmena;
+  }
+  function kzTacka(e) { const b = $('#kz-svg').getBoundingClientRect(); const c = (v) => Math.round(Math.max(0, Math.min(1, v)) * 1000) / 1000; return [c((e.clientX - b.left) / b.width), c((e.clientY - b.top) / b.height)]; }
+  function kzVezi() {
+    const svg = $('#kz-svg');
+    $('#kz-lista').addEventListener('click', (e) => { const b = e.target.closest('button[data-id]'); if (b && b.dataset.id !== KZ.kam.id) kzIzaberi(b.dataset.id); });
+    $('#kz-alati').addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; KZ.alat = b.dataset.alat; KZ.izbor = null; KZ.nova = null; kzCrtaj(); });
+    $('#kz-det').addEventListener('change', (e) => { KZ.det = e.target.checked; kzSlika(false); });
+    $('#kz-proveri').addEventListener('click', async () => { try { await api('POST', '/api/admin/kamere/' + encodeURIComponent(KZ.kam.id) + '/provera'); } catch (e) { $('#kz-provera').textContent = e.message; return; } kzProvera(); });
+    $('#kz-novi').addEventListener('click', () => { $('#kz-det').checked = false; KZ.det = false; kzSlika(true); });
+    $('#kz-opcije').addEventListener('click', (e) => {
+      const b = e.target.closest('[data-op]'); if (!b) return; const z = KZ.radna;
+      ({ 'roi-nova': () => { KZ.nova = []; }, 'roi-odustani': () => { KZ.nova = null; }, 'roi-zavrsi': () => { z.roi = KZ.nova; KZ.nova = null; }, 'roi-ukloni': () => { z.roi = null; },
+        'linija-obrni': () => { z.linija.smer = z.linija.smer === 'gore' ? 'dole' : 'gore'; }, 'linija-ukloni': () => { z.linija = null; },
+        'puno-gore': () => { z.puno = { kraj: 'gore', y: z.puno ? z.puno.y : 0.35 }; }, 'puno-dole': () => { z.puno = { kraj: 'dole', y: z.puno ? z.puno.y : 0.88 }; }, 'puno-ukloni': () => { z.puno = null; },
+        'zum-ukloni': () => { z.zum = null; } })[b.dataset.op]();
+      kzCrtaj();
+    });
+    svg.addEventListener('pointerdown', (e) => {
+      if (e.button === 2) return;
+      const p = kzTacka(e), tip = e.target.dataset && e.target.dataset.tip, i = Number(e.target.dataset && e.target.dataset.i), z = KZ.radna;
+      e.preventDefault(); svg.setPointerCapture(e.pointerId);
+      if (KZ.alat === 'roi') {
+        if (KZ.nova) { if (tip === 'nova-zatvori' && KZ.nova.length >= 3) { z.roi = KZ.nova; KZ.nova = null; } else KZ.nova.push(p); }
+        else if (tip === 'roi') { KZ.izbor = i; KZ.vuce = { tip: 'roi', i }; }
+        else if (tip === 'roi-dodaj') { z.roi.splice(i + 1, 0, p); KZ.izbor = i + 1; KZ.vuce = { tip: 'roi', i: i + 1 }; }
+        else if (!z.roi) KZ.nova = [p];
+        else KZ.izbor = null;
+      } else if (KZ.alat === 'linija') {
+        if (tip === 'linija-a' || tip === 'linija-b') KZ.vuce = { tip };
+        else if (tip === 'linija') KZ.vuce = { tip: 'linija', od: p, bilo: kopija(z.linija) };
+        else { KZ.vuce = { tip: 'linija-b', nova: true, bilo: kopija(z.linija) }; z.linija = { x1: p[0], y1: p[1], x2: p[0], y2: p[1], smer: z.linija ? z.linija.smer : 'gore' }; }
+      } else if (KZ.alat === 'puno') {
+        z.puno = { kraj: z.puno ? z.puno.kraj : 'gore', y: p[1] }; KZ.vuce = { tip: 'puno' };
+      } else if (KZ.alat === 'zum') {
+        if (tip === 'zum') KZ.vuce = { tip: 'zum', i, od: p, bilo: z.zum[i].slice() };
+        else if (tip === 'zum-ugao') KZ.vuce = { tip: 'zum-ugao', i };
+        else if ((z.zum || []).length < 4) { z.zum = z.zum || []; z.zum.push([p[0], p[1], p[0], p[1]]); KZ.vuce = { tip: 'zum-novi', i: z.zum.length - 1, sidro: p }; }
+      }
+      kzCrtaj();
+    });
+    svg.addEventListener('pointermove', (e) => {
+      const v = KZ.vuce; if (!v) return; const p = kzTacka(e), z = KZ.radna, c = (x) => Math.round(Math.max(0, Math.min(1, x)) * 1000) / 1000;
+      if (v.tip === 'roi') z.roi[v.i] = p;
+      else if (v.tip === 'linija-a') { z.linija.x1 = p[0]; z.linija.y1 = p[1]; }
+      else if (v.tip === 'linija-b') { z.linija.x2 = p[0]; z.linija.y2 = p[1]; }
+      else if (v.tip === 'linija') { const dx = p[0] - v.od[0], dy = p[1] - v.od[1]; z.linija = Object.assign({}, v.bilo, { x1: c(v.bilo.x1 + dx), y1: c(v.bilo.y1 + dy), x2: c(v.bilo.x2 + dx), y2: c(v.bilo.y2 + dy) }); }
+      else if (v.tip === 'puno') z.puno.y = p[1];
+      else if (v.tip === 'zum') { const b = v.bilo, dx = Math.max(-b[0], Math.min(1 - b[2], p[0] - v.od[0])), dy = Math.max(-b[1], Math.min(1 - b[3], p[1] - v.od[1])); z.zum[v.i] = [c(b[0] + dx), c(b[1] + dy), c(b[2] + dx), c(b[3] + dy)]; }
+      else if (v.tip === 'zum-ugao') { const q = z.zum[v.i]; z.zum[v.i] = [q[0], q[1], Math.max(q[0] + 0.05, p[0]), Math.max(q[1] + 0.05, p[1])]; }
+      else if (v.tip === 'zum-novi') z.zum[v.i] = [Math.min(v.sidro[0], p[0]), Math.min(v.sidro[1], p[1]), Math.max(v.sidro[0], p[0]), Math.max(v.sidro[1], p[1])];
+      kzCrtaj();
+    });
+    const pusti = () => {
+      const v = KZ.vuce; KZ.vuce = null; if (!v) return; const z = KZ.radna;
+      if (v.tip === 'linija-b' && v.nova && Math.hypot(z.linija.x2 - z.linija.x1, z.linija.y2 - z.linija.y1) < 0.05) z.linija = v.bilo;   // samo klik – nova linija se ne pravi
+      if (v.tip === 'zum-novi') { const q = z.zum[v.i]; if (q[2] - q[0] < 0.05 || q[3] - q[1] < 0.05) z.zum.splice(v.i, 1); if (!z.zum.length) z.zum = null; }
+      kzCrtaj();
+    };
+    svg.addEventListener('pointerup', pusti); svg.addEventListener('pointercancel', pusti);
+    svg.addEventListener('contextmenu', (e) => {
+      e.preventDefault(); const tip = e.target.dataset && e.target.dataset.tip, i = Number(e.target.dataset && e.target.dataset.i), z = KZ.radna;
+      if (tip === 'roi' && z.roi.length > 3) { z.roi.splice(i, 1); KZ.izbor = null; }
+      else if (tip === 'roi') toast('Zona mora imati bar 3 tačke.', true);
+      else if (tip === 'zum' || tip === 'zum-ugao') { z.zum.splice(i, 1); if (!z.zum.length) z.zum = null; }
+      kzCrtaj();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (aktivan !== 'kamere' || !KZ.kam || /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) return;
+      if ((e.key === 'Delete' || e.key === 'Backspace') && KZ.alat === 'roi' && KZ.izbor != null && KZ.radna.roi && KZ.radna.roi.length > 3) { e.preventDefault(); KZ.radna.roi.splice(KZ.izbor, 1); KZ.izbor = null; kzCrtaj(); }
+      if (e.key === 'Enter' && KZ.nova && KZ.nova.length >= 3) { KZ.radna.roi = KZ.nova; KZ.nova = null; kzCrtaj(); }
+      if (e.key === 'Escape' && KZ.nova) { KZ.nova = null; kzCrtaj(); }
+    });
+    $('#kz-ponisti').addEventListener('click', () => { KZ.radna = zone(KZ.kam); KZ.nova = null; KZ.izbor = null; kzCrtaj(); });
+    $('#kz-sacuvaj').addEventListener('click', async () => {
+      if (KZ.nova) return toast('Prvo završite zonu (klik na prvu tačku ili Enter).', true);
+      try { await api('PUT', '/api/admin/kamere/' + encodeURIComponent(KZ.kam.id), KZ.radna); toast('Sačuvano – radnik primenjuje u sledećem krugu (do 5 min).'); await kzUcitajListu(KZ.kam.id); }
+      catch (err) { toast(err.message, true); }
+    });
+    $('#kz-vrati').addEventListener('click', async () => {
+      if (!await potvrdi('Vrati podrazumevano', 'Zone ove kamere vraćaju se na podrazumevane iz koda. Nastaviti?', { vrsta: 'opasno', potvrdi: 'Vrati' })) return;
+      try { await api('DELETE', '/api/admin/kamere/' + encodeURIComponent(KZ.kam.id)); toast('Vraćene podrazumevane zone.'); await kzUcitajListu(KZ.kam.id); }
+      catch (err) { toast(err.message, true); }
+    });
+    window.addEventListener('beforeunload', (e) => { if (izmenjeno()) { e.preventDefault(); e.returnValue = ''; } });
+  }
+
+
+  /* prijava */
+  function prikazi(ulogovan) {
+    $('#prijava').hidden = ulogovan; $('#panel').hidden = !ulogovan; $('#odjava').hidden = !ulogovan;
+    if (ulogovan) kamere();
+  }
+  $('#prijava').addEventListener('submit', async (e) => {
+    e.preventDefault(); $('#p-greska').textContent = '';
+    try { await api('POST', '/api/admin/prijava', { korisnik: $('#p-k').value, lozinka: $('#p-l').value }); $('#p-l').value = ''; prikazi(true); }
+    catch (err) { $('#p-greska').textContent = err.message; }
+  });
+  $('#odjava').addEventListener('click', async () => { await api('POST', '/api/admin/odjava').catch(() => {}); location.reload(); });
+  fetch('/api/admin/ja').then((r) => r.json()).then((j) => prikazi(!!j.admin)).catch(() => prikazi(false));
+})();
+</script>
+</body>
+</html>

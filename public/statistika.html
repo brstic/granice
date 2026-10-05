@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="sr-Latn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Statistika gužvi na granicama – kada je najmanje čekanje</title>
+<meta name="description" content="Kada je gužva na graničnim prelazima Srbije: po satu, dobu dana, danu u nedelji i mesecu. Izmereno sa kamera, svakih 5 minuta.">
+<meta name="robots" content="index, follow"><link rel="canonical" href="https://granice.sparkcan.com/statistika">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap">
+<link rel="icon" type="image/svg+xml" href="/logo.svg">
+<style>
+  :root { --plava: #253965; --svetla: #d2e7ff; --svetla2: #f3f9ff; --linija: #d7d8d6; --tekst: #111; --tekst2: #444; --tekst3: #777; --zelena: #017932; --zuta: #b26a00; --crvena: #c6363c; --siva2: #eceef2; color-scheme: light only; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: #f4f5f7; color: var(--tekst); font: 500 14px/1.55 "Montserrat", Arial, Helvetica, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: var(--plava); }
+  button { font: inherit; }
+  .traka { background: var(--plava); color: #fff; }
+  .traka-u { max-width: 1160px; margin: 0 auto; padding: 0 20px; height: 40px; display: flex; align-items: center; justify-content: space-between; font-size: 12.5px; }
+  .traka a { color: #fff; text-decoration: none; font-weight: 600; }
+  .glava { background: #fff; border-bottom: 1px solid var(--linija); }
+  .glava-u { max-width: 1160px; margin: 0 auto; padding: 18px 20px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .glava img { width: 40px; height: 40px; display: block; }
+  .glava h1 { margin: 0; font-size: 22px; color: var(--plava); }
+  .glava p { margin: 2px 0 0; font-size: 12.5px; color: var(--tekst3); }
+  main { max-width: 1160px; margin: 0 auto; padding: 22px 20px 56px; display: flex; flex-direction: column; gap: 22px; }
+  h2 { margin: 0 0 4px; font-size: 16px; color: var(--plava); }
+  .pod { font-size: 12.5px; color: var(--tekst3); margin: 0 0 10px; }
+  .izbor { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; background: #fff; border: 1px solid var(--linija); padding: 12px 16px; }
+  .izbor label { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--tekst3); font-weight: 700; margin-right: 6px; }
+  .cipovi { display: flex; flex-wrap: wrap; gap: 6px; }
+  .cip { border: 1px solid var(--plava); background: #fff; color: var(--plava); padding: 6px 12px; font: 600 12.5px "Montserrat", Arial, sans-serif; cursor: pointer; }
+  .cip.aktivan { background: var(--plava); color: #fff; }
+  .cip[disabled] { opacity: .4; cursor: default; }
+  .pokr { margin-left: auto; font-size: 12px; color: var(--tekst3); }
+  .pokr b { color: var(--plava); }
+  .mreza { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+  .kut { background: #fff; border: 1px solid var(--linija); padding: 16px 18px; min-width: 0; }
+  .kut.siroka { grid-column: 1 / -1; }
+  .kut h2 { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+  .kut h2 small { font-size: 11px; color: var(--tekst3); font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
+  .zakljucak { font-size: 13px; color: var(--tekst2); margin: 6px 0 12px; line-height: 1.5; }
+  .zakljucak b { color: var(--tekst); }
+  .zakljucak .z { color: var(--zelena); font-weight: 700; } .zakljucak .c { color: var(--crvena); font-weight: 700; }
+  svg.graf { width: 100%; height: 150px; display: block; overflow: visible; }
+  .doba { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .doba div { padding: 10px 12px; background: #f7f8fa; border-top: 4px solid var(--siva2); }
+  .doba div.z { border-top-color: var(--zelena); } .doba div.u { border-top-color: var(--zuta); } .doba div.c { border-top-color: var(--crvena); }
+  .doba span { display: block; font-size: 10.5px; text-transform: uppercase; letter-spacing: .05em; color: var(--tekst3); font-weight: 700; }
+  .doba b { display: block; font-size: 20px; color: var(--plava); line-height: 1.2; margin-top: 2px; }
+  .doba small { color: var(--tekst3); font-size: 11.5px; }
+  .toplotna table { border-collapse: collapse; width: 100%; table-layout: fixed; }
+  .toplotna td, .toplotna th { padding: 0; border: 1px solid #fff; height: 18px; font-size: 9.5px; text-align: center; color: var(--tekst3); }
+  .toplotna th { font-weight: 600; width: 28px; }
+  .toplotna td[title] { cursor: help; }
+  .leg { display: flex; gap: 12px; font-size: 11px; color: var(--tekst3); margin-top: 8px; flex-wrap: wrap; }
+  .leg span::before { content: ""; display: inline-block; width: 10px; height: 10px; margin-right: 5px; vertical-align: -1px; background: var(--b); }
+  .rek { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .rek div { padding: 10px 12px; background: #f7f8fa; }
+  .rek span { display: block; font-size: 10.5px; text-transform: uppercase; letter-spacing: .05em; color: var(--tekst3); font-weight: 700; }
+  .rek b { display: block; font-size: 18px; color: var(--plava); margin-top: 2px; }
+  .rek small { color: var(--tekst3); font-size: 11.5px; }
+  .malo { font-size: 12px; color: var(--tekst3); padding: 10px 12px; background: #fafbfd; border: 1px dashed var(--linija); }
+  footer { max-width: 1160px; margin: 0 auto; padding: 18px 20px 30px; font-size: 12px; color: var(--tekst3); border-top: 1px solid var(--linija); line-height: 1.6; }
+  footer a { text-decoration: none; font-weight: 600; margin-right: 14px; }
+  @media (max-width: 700px) { .doba { grid-template-columns: repeat(2, 1fr); } .pokr { margin-left: 0; width: 100%; } }
+</style>
+</head>
+<body>
+<div class="traka"><div class="traka-u"><a href="/">← Stanje na granicama</a><span>Statistika gužvi</span></div></div>
+<header class="glava"><div class="glava-u"><img src="/logo-512.png" alt=""><div><h1>Kada je gužva na granici</h1><p>Prosečno čekanje po satu, dobu dana, danu u nedelji i mesecu – izmereno sa kamera svakih 5 minuta.</p></div></div></header>
+
+<main>
+  <div class="izbor">
+    <div><label>Prelaz</label><span class="cipovi" id="prelazi"></span></div>
+    <div><label>Smer</label><span class="cipovi" id="smerovi"><button class="cip aktivan" data-s="ulaz">Ulaz u Srbiju</button><button class="cip" data-s="izlaz">Izlaz iz Srbije</button></span></div>
+    <div class="pokr" id="pokr"></div>
+  </div>
+  <div id="sadrzaj" class="mreza"></div>
+</main>
+
+<footer><a href="/">Stanje na granicama</a><a href="/statistika">Statistika gužvi</a><a href="/privatnost">Privatnost</a><br>Čekanje je automatska procena iz broja vozila u koloni i izmerenog protoka kroz šalter (javne kamere MUP-a Srbije / AMSS-a i HAK-a). Statistika postaje pouzdanija kako se skupljaju nedelje merenja.</footer>
+
+<script>
+  (function () {
+    const $ = (s) => document.querySelector(s);
+    const esc = (t) => String(t == null ? '' : t).replace(/[&<>"]/g, (x) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[x]));
+    const DANI = ['ponedeljak', 'utorak', 'sreda', 'četvrtak', 'petak', 'subota', 'nedelja'], DANI_K = ['Pon', 'Uto', 'Sre', 'Čet', 'Pet', 'Sub', 'Ned'];
+    const MESECI = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'avg', 'sep', 'okt', 'nov', 'dec'];
+    const url = new URLSearchParams(location.search);
+    let prelazi = [], prelaz = url.get('prelaz') || 'Horgoš', smer = url.get('smer') || 'ulaz', podaci = null;
+    const kl = (m) => (m == null ? '' : m <= 10 ? 'z' : m <= 30 ? 'u' : 'c');   // ista skala kao na stanju: velika gužva preko 30 min
+    const boja = (m) => (m == null ? '#ecedf0' : m <= 5 ? '#dcefe1' : m <= 10 ? '#b9e3c3' : m <= 20 ? '#f6d28a' : m <= 30 ? '#f0a56a' : '#e8a3a8');
+    const min = (m) => (m == null ? '—' : m < 1 ? 'bez čekanja' : Math.round(m) + ' min');
+    const datumT = (iso) => new Date(iso).toLocaleString('sr-Latn-RS', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Belgrade' });
+    const satSad = () => Number(new Intl.DateTimeFormat('en-US', { timeZone: 'Europe/Belgrade', hour: 'numeric', hour12: false }).format(new Date())) % 24;
+
+    /* stubasti grafikon: vrednosti (min čekanja), oznake ispod, istaknuti indeks */
+    function stubovi(niz, oznake, istakni, opts) {
+      opts = opts || {}; const W = 600, H = 150, pad = { l: 30, r: 6, t: 14, b: 22 }; const n = niz.length; const bw = (W - pad.l - pad.r) / n;
+      const vals = niz.map((x) => (x && x.cek != null ? x.cek : null)); const max = Math.max(5, ...vals.filter((v) => v != null));
+      const y = (v) => pad.t + (H - pad.t - pad.b) * (1 - v / max);
+      let s = `<svg class="graf" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">`;
+      [0, 0.5, 1].forEach((f) => { const v = max * f; s += `<line x1="${pad.l}" y1="${y(v)}" x2="${W - pad.r}" y2="${y(v)}" stroke="#eceded"/><text x="${pad.l - 4}" y="${y(v) + 3}" font-size="9" text-anchor="end" fill="#999">${Math.round(v)}</text>`; });
+      niz.forEach((x, i) => {
+        const cx = pad.l + i * bw; const v = vals[i];
+        if (v == null) { s += `<rect x="${cx + bw * 0.15}" y="${y(0) - 2}" width="${bw * 0.7}" height="2" fill="#e3e4e8"/>`; }
+        else { const fill = i === istakni ? '#c6363c' : v <= 10 ? '#4caf7a' : v <= 20 ? '#4a90e2' : v <= 30 ? '#e0a03a' : '#d05a5a'; s += `<rect x="${cx + bw * 0.15}" y="${y(v)}" width="${bw * 0.7}" height="${Math.max(1, y(0) - y(v))}" fill="${fill}"><title>${esc(oznake[i])}: prosečno ${min(v)}${x.maks != null ? ', najviše ' + min(x.maks) : ''} (${x.n} merenja)</title></rect>`; }
+        if (n <= 12 || i % (opts.korak || 3) === 0) s += `<text x="${cx + bw / 2}" y="${H - 6}" font-size="${n > 12 ? 9 : 10}" text-anchor="middle" fill="#666">${esc(oznake[i])}</text>`;
+      });
+      return s + '</svg>';
+    }
+    function linija(pod) {
+      const W = 600, H = 150, pad = { l: 30, r: 6, t: 14, b: 22 }; const n = pod.length; if (n < 2) return '';
+      const max = Math.max(5, ...pod.map((p) => p.maks || 0)); const x = (i) => pad.l + (i / (n - 1)) * (W - pad.l - pad.r), y = (v) => pad.t + (H - pad.t - pad.b) * (1 - v / max);
+      const put = (kl) => pod.map((p, i) => (i ? 'L' : 'M') + x(i).toFixed(1) + ' ' + y(p[kl] || 0).toFixed(1)).join(' ');
+      let s = `<svg class="graf" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">`;
+      [0, 0.5, 1].forEach((f) => { const v = max * f; s += `<line x1="${pad.l}" y1="${y(v)}" x2="${W - pad.r}" y2="${y(v)}" stroke="#eceded"/><text x="${pad.l - 4}" y="${y(v) + 3}" font-size="9" text-anchor="end" fill="#999">${Math.round(v)}</text>`; });
+      s += `<path d="${put('maks')}" fill="none" stroke="#e8a3a8" stroke-width="1.5" stroke-dasharray="4 3"/><path d="${put('cek')} L${x(n - 1)} ${y(0)} L${x(0)} ${y(0)} Z" fill="rgba(37,57,101,.1)"/><path d="${put('cek')}" fill="none" stroke="#253965" stroke-width="2"/>`;
+      pod.forEach((p, i) => { if (n <= 10 || i % Math.ceil(n / 8) === 0 || i === n - 1) s += `<text x="${x(i)}" y="${H - 6}" font-size="9" text-anchor="middle" fill="#666">${p.datum.slice(8, 10)}.${p.datum.slice(5, 7)}.</text>`; });
+      return s + '</svg>';
+    }
+    const ekstrem = (niz, oznake, najmanje) => { const ind = niz.map((x, i) => [x && x.cek != null && x.n >= 3 ? x.cek : null, i]).filter(([v]) => v != null).sort((a, b) => (najmanje ? a[0] - b[0] : b[0] - a[0])).slice(0, 3); return ind.map(([v, i]) => oznake[i]); };
+
+    function nacrtaj() {
+      const d = podaci && podaci.smerovi[smer]; const c = $('#sadrzaj');
+      if (!d) { c.innerHTML = '<div class="kut siroka"><p class="malo">Za ovaj smer nema kamere, pa ni statistike.</p></div>'; $('#pokr').innerHTML = ''; return; }
+      const pk = d.pokrivenost; const od = pk.od ? new Date(pk.od).toLocaleDateString('sr-Latn-RS', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Belgrade' }) : '';
+      $('#pokr').innerHTML = `Merenja od <b>${esc(od)}</b> · <b>${pk.merenja}</b> merenja · <b>${pk.dana}</b> ${pk.dana === 1 ? 'dan' : pk.dana < 5 ? 'dana' : 'dana'}`;
+      const sati = Array.from({ length: 24 }, (_, i) => i + 'h'), ss = satSad();
+      const najbSat = ekstrem(d.poSatu, sati, true), najgSat = ekstrem(d.poSatu, sati, false);
+      const najbDan = ekstrem(d.poDanu, DANI, true), najgDan = ekstrem(d.poDanu, DANI, false);
+      const malo = pk.dana < 2, maloDana = pk.dana < 7;
+      const doba = d.dobaDana; const dobaHTML = [['noc', 'Noć', '22–06h'], ['jutro', 'Jutro', '06–10h'], ['dan', 'Dan', '10–16h'], ['popodne', 'Popodne', '16–22h']].map(([k, n, h]) => { const x = doba[k]; return `<div class="${x ? kl(x.cek) : ''}"><span>${n} · ${h}</span><b>${x ? min(x.cek) : '—'}</b><small>${x ? 'prosečno ' + Math.round(x.voz) + ' vozila' : 'još nema merenja'}</small></div>`; }).join('');
+      const rek = d.rekord, rekV = d.rekordVozila;
+      const max = Math.max(1, ...d.toplotna.flat().filter((v) => v != null));
+      c.innerHTML = `
+        <div class="kut siroka"><h2>Doba dana <small>prosečno čekanje</small></h2><div class="doba">${dobaHTML}</div></div>
+        <div class="kut"><h2>Po satu <small>crveno = sada</small></h2>
+          <p class="zakljucak">${malo || !najbSat.length ? 'Prvi dan merenja – slika po satima se popunjava kroz nekoliko dana; do tada su prikazani samo sati koji su već izmereni.' : `Najmanje se čeka oko <span class="z">${najbSat.join(', ')}</span>, najviše oko <span class="c">${najgSat.join(', ')}</span>.`}</p>
+          ${stubovi(d.poSatu, sati, ss, { korak: 3 })}</div>
+        <div class="kut"><h2>Po danu u nedelji</h2>
+          <p class="zakljucak">${maloDana ? `Imamo merenja za ${pk.dana} ${pk.dana === 1 ? 'dan' : 'dana'} – slika po danima u nedelji je potpuna posle prve cele nedelje.` : `Najmirniji: <span class="z">${najbDan.join(', ')}</span> · najgušći: <span class="c">${najgDan.join(', ')}</span>.`}</p>
+          ${stubovi(d.poDanu, DANI_K, (new Date().getDay() + 6) % 7)}</div>
+        <div class="kut siroka toplotna"><h2>Nedelja × sat <small>prosečno čekanje u minutima</small></h2>
+          ${pk.dana < 3 ? '<p class="malo">Toplotna mapa se popunjava kako prolaze dani; posle prve nedelje pokazuje jasno kada je gužva, a kada se prolazi bez čekanja.</p>' : ''}
+          <table><tr><th></th>${Array.from({ length: 24 }, (_, h) => `<th>${h}</th>`).join('')}</tr>${d.toplotna.map((red, di) => `<tr><th>${DANI_K[di]}</th>${red.map((v, h) => `<td style="background:${boja(v)}" title="${DANI_K[di]} ${h}:00 – ${v == null ? 'nema merenja' : 'prosečno ' + min(v)}">${v != null && max > 0 && v >= 30 ? Math.round(v) : ''}</td>`).join('')}</tr>`).join('')}</table>
+          <div class="leg"><span style="--b:#dcefe1">do 5 min</span><span style="--b:#b9e3c3">do 10</span><span style="--b:#f6d28a">do 20</span><span style="--b:#f0a56a">do 30</span><span style="--b:#e8a3a8">preko 30 – velika gužva</span><span style="--b:#ecedf0">nema merenja</span></div></div>
+        <div class="kut"><h2>Poslednjih 30 dana <small>prosek i najviše po danu</small></h2>
+          ${d.poDatumu.length >= 2 ? linija(d.poDatumu) : '<p class="malo">Trend po danima kreće kad prođe drugi dan merenja.</p>'}</div>
+        <div class="kut"><h2>Po mesecu</h2>
+          <p class="zakljucak">${d.poMesecu.filter(Boolean).length >= 2 ? 'Prosečno čekanje po mesecima – sezonske gužve (leto, praznici) vide se ovde.' : 'Prvi mesec merenja; poređenje po mesecima dolazi vremenom.'}</p>
+          ${stubovi(d.poMesecu, MESECI, new Date().getMonth())}</div>
+        <div class="kut"><h2>Rekordi</h2><div class="rek">
+          <div><span>Najduže čekanje</span><b>${rek ? min(rek.cek) : '—'}</b><small>${rek ? esc(datumT(rek.vreme)) + ' · ' + rek.voz + ' vozila u kadru' : ''}</small></div>
+          <div><span>Najviše vozila u kadru</span><b>${rekV ? rekV.voz : '—'}</b><small>${rekV ? esc(datumT(rekV.vreme)) : ''}</small></div></div></div>`;
+    }
+    function crtajIzbor() {
+      $('#prelazi').innerHTML = prelazi.map((p) => `<button class="cip${p.prelaz === prelaz ? ' aktivan' : ''}" data-p="${esc(p.prelaz)}" title="${esc(p.drzava)}">${esc(p.prelaz)}</button>`).join('');
+      document.querySelectorAll('#prelazi .cip').forEach((b) => b.addEventListener('click', () => { prelaz = b.dataset.p; const pp = prelazi.find((x) => x.prelaz === prelaz); if (pp && !pp.smerovi.includes(smer)) smer = pp.smerovi[0]; ucitaj(); }));
+      const pp = prelazi.find((x) => x.prelaz === prelaz) || { smerovi: [] };
+      document.querySelectorAll('#smerovi .cip').forEach((b) => { b.classList.toggle('aktivan', b.dataset.s === smer); b.disabled = !pp.smerovi.includes(b.dataset.s); b.onclick = () => { smer = b.dataset.s; ucitaj(); }; });
+    }
+    async function ucitaj() {
+      history.replaceState(null, '', '?prelaz=' + encodeURIComponent(prelaz) + '&smer=' + smer);
+      crtajIzbor();
+      try { const r = await fetch('/api/granice/statistika?prelaz=' + encodeURIComponent(prelaz)); podaci = r.ok ? await r.json() : null; } catch (e) { podaci = null; }
+      nacrtaj();
+    }
+    fetch('/api/granice/statistika/prelazi').then((r) => r.json()).then((p) => { prelazi = p; if (!prelazi.some((x) => x.prelaz === prelaz)) prelaz = prelazi[0].prelaz; ucitaj(); });
+  })();
+</script>
+</body>
+</html>

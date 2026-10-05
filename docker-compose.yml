@@ -1,0 +1,34 @@
+# Lokalno / na sopstvenom serveru:  cp .env.example .env  (upiši ADMIN_LOZINKA i SESSION_SECRET)  →  docker compose up -d
+# Sajt: http://localhost:3090   ·   podaci (baza, kadrovi, YOLO modeli) u ./data
+# Planer puta (opciono): napravi graf (README → „Planer puta“), pa  docker compose --profile planer up -d
+services:
+  sajt:
+    build: .
+    image: granice
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      HOST: 0.0.0.0
+      OSRM_URL: http://osrm:5000
+      COOKIE_SECURE: ${COOKIE_SECURE:-0}   # 1 kad je ispred HTTPS reverse proxy
+    ports:
+      - "${GRANICE_PORT:-3090}:3090"
+    volumes:
+      - ./data:/app/data
+
+  kamere:
+    image: granice
+    depends_on: [sajt]
+    restart: unless-stopped
+    env_file: .env
+    command: ["node", "server/kamere.js"]
+    volumes:
+      - ./data:/app/data
+
+  osrm:
+    profiles: [planer]
+    image: ghcr.io/project-osrm/osrm-backend:v5.27.1
+    restart: unless-stopped
+    command: osrm-routed --algorithm mld --max-table-size 200 /data/putevi.osrm
+    volumes:
+      - ${OSRM_DIR:-./osrm}/graf:/data:ro
